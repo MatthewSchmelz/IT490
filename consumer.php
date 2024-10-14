@@ -56,7 +56,7 @@ class testRabbitMQServer {
             $channel->basic_ack($msg->delivery_info['delivery_tag']);     
             $channel->wait();
         });
-
+        
         $channel->close();
         $connection->close();
     }
@@ -140,6 +140,7 @@ function handlereg($username, $password) {
     	echo ' [x] Connection failed for login',"\n";
         die("Connection failed: " . $mysqli->connect_error);
     }
+    
     $query = "SELECT * FROM users WHERE username = '$username' AND password = '$password'";
     $result2 = $mysqli->query($query);
     
