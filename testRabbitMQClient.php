@@ -11,14 +11,15 @@ if (isset($argv[1]))
 }
 else
 {
-  $msg = "test message";
+  $msg = "IT490";
 }
 
 $request = array();
-$request['type'] = "Login";
-$request['username'] = "steve";
-$request['password'] = "password";
-$request['message'] = $msg;
+$request['type'] = "validate";
+$request['username'] = "IT490";
+$request['password'] = "IT490";
+$request['sessionId'] = $msg;
+
 $response = $client->send_request($request);
 //$response = $client->publish($request);
 
