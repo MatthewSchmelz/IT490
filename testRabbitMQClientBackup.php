@@ -11,8 +11,7 @@ if (isset($argv[1]))
 }
 else
 {
-	//example OMDB data request
-	$msg = file_get_contents('https://www.omdbapi.com/?i=tt3896198&apikey=260e6d69');
+  $msg = "test message";
 }
 
 $request = array();
