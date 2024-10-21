@@ -4,39 +4,20 @@ require_once('path.inc');
 require_once('get_host_info.inc');
 require_once('rabbitMQLib.inc');
 
-$server = new rabbitMQServer("testRabbitMQ.ini","testServer");
-
-echo "testRabbitMQServer BEGIN".PHP_EOL;
-$server->process_requests('requestProcessor');
-echo "testRabbitMQServer END".PHP_EOL;
-
-function doLogin($username,$password)
+$rabbitClient = new rabbitMQClient("testRabbitMQ.ini","testServer");
+if (isset($argv[1]))
 {
-    // lookup username in database
-    // check password
-    return true;
-    //return false if not valid
+  $msg = $argv[1];
+}
+else
+{
+$msg = "test message";	
 }
 
-function requestProcessor($request)
-{
-  echo "received request".PHP_EOL;
-  var_dump($request);
-  if(!isset($request['type']))
-  {
-    return "ERROR: unsupported message type";
-  }
-  switch ($request['type'])
-  {
-    case "login":
-      return doLogin($request['username'],$request['password']);
-    case "validate_session":
-      return doValidate($request['sessionId']);
-    case "movie_title":
-      return handleSearch($request['movie1']);
-  }
-  return array("returnCode" => '0', 'message'=>"Server received request and processed");
-}
+
+$request['movie1'];
+$response = $rabbitClient->send_request($request);
+//$response = $client->publish($request);
 // TODO Movie Search:
 function handleSearch($title) {
     $apiKey = '13db636387987b24f85de0b1b7b2f8e2'; // Replace with your actual TMDB API key
@@ -89,6 +70,9 @@ function handleSearch($title) {
 }
 
 
-exit();
-?>
+//echo "client received response: ".PHP_EOL;
+//print_r($response);
+echo "\n\n";
+
+echo $argv[0]." END".PHP_EOL;
 
