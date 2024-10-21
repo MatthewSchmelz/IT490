@@ -23,8 +23,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $request['type'] = "register";
     $request['username'] = $username;
     $request['password'] = $password;
+    $request['rating_table'] = $username . "_rating";
+    $request['watchlist_table'] = $username . "_watchlist";
+    
 
-    // Send the registration request and receive a response (status and sessionID)
+    // Send the registration request and receive a response (status and sessionId)
     $response = $client->send_request($request);
 
     if ($response === true) {

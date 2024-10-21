@@ -45,6 +45,7 @@ if($response['status'] === true){
 	print_r($response);
 	$sessionId = $response['sessionId'];
 	setcookie("sessionId", $sessionId, time() + 30 , "/");
+	setcookie("username", $username, time() + 30 , "/");
 	header("Location: success.php");
         exit();
 } else if ($response === false){
