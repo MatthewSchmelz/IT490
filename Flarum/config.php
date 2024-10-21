@@ -15,7 +15,7 @@
     'engine' => 'InnoDB',
     'prefix_indexes' => true,
   ),
-  'url' => 'http://localhost/IT490/Flarum/public',
+  'url' => 'http://172.24.71.42/IT490/Flarum/public',
   'paths' => 
   array (
     'api' => 'api',

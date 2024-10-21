@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'flarum/flarum',
-        'pretty_version' => 'v1.8.1',
-        'version' => '1.8.1.0',
-        'reference' => null,
+        'pretty_version' => 'dev-master',
+        'version' => 'dev-master',
+        'reference' => 'e3485eb00198c2203a31f2c0da98b67c1bed9b61',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -200,9 +200,9 @@
             'dev_requirement' => false,
         ),
         'flarum/flarum' => array(
-            'pretty_version' => 'v1.8.1',
-            'version' => '1.8.1.0',
-            'reference' => null,
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
+            'reference' => 'e3485eb00198c2203a31f2c0da98b67c1bed9b61',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -299,9 +299,9 @@
             'dev_requirement' => false,
         ),
         'flarum/suspend' => array(
-            'pretty_version' => 'v1.8.2',
-            'version' => '1.8.2.0',
-            'reference' => '2373fcc0b06e300f9bec6f165d4eb438fd2e2807',
+            'pretty_version' => 'v1.8.3',
+            'version' => '1.8.3.0',
+            'reference' => 'c91a1ca1fcaf898fe213a6b11cb37af7f9f89e48',
             'type' => 'flarum-extension',
             'install_path' => __DIR__ . '/../flarum/suspend',
             'aliases' => array(),
@@ -335,9 +335,9 @@
             'dev_requirement' => false,
         ),
         'guzzlehttp/promises' => array(
-            'pretty_version' => '2.0.3',
-            'version' => '2.0.3.0',
-            'reference' => '6ea8dd08867a2a42619d65c3deb2c0fcbf81c8f8',
+            'pretty_version' => '2.0.4',
+            'version' => '2.0.4.0',
+            'reference' => 'f9c436286ab2892c7db7be8c8da4ef61ccf7b455',
             'type' => 'library',
             'install_path' => __DIR__ . '/../guzzlehttp/promises',
             'aliases' => array(),
@@ -578,9 +578,9 @@
             'dev_requirement' => false,
         ),
         'laminas/laminas-httphandlerrunner' => array(
-            'pretty_version' => '2.10.0',
-            'version' => '2.10.0.0',
-            'reference' => '35a0ba92e940a2f9533754f5a56187fa321f7693',
+            'pretty_version' => '2.11.0',
+            'version' => '2.11.0.0',
+            'reference' => 'c428d9f67f280d155637cbe2b7245b5188c8cdae',
             'type' => 'library',
             'install_path' => __DIR__ . '/../laminas/laminas-httphandlerrunner',
             'aliases' => array(),
@@ -883,8 +883,8 @@
         'psr/log-implementation' => array(
             'dev_requirement' => false,
             'provided' => array(
-                0 => '1.0|2.0',
-                1 => '1.0.0',
+                0 => '1.0.0',
+                1 => '1.0|2.0',
             ),
         ),
         'psr/simple-cache' => array(
