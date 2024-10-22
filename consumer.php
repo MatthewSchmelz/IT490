@@ -3,7 +3,7 @@
 require_once __DIR__ . '/vendor/autoload.php';  // Include RabbitMQ library
 require_once 'testRabbitMQ.ini';  // Include the RabbitMQ host info file
 require_once 'rabbitMQLib.inc';
-//require_once 'testRabbitMQ2.ini';
+require_once 'testRabbitMQ2.ini';
 require_once 'path.inc';
 require_once 'get_host_info.inc';
 
@@ -216,37 +216,37 @@ function handleLogin($username, $password) {
 	$mysqli->close();
 }
 
-// TODO 
+// TODO
 function handleTitle($title) {
 	$mysqli = new mysqli("localhost", "IT490", "IT490", "imdb_database");
 
 	// Check for connection errors
 	if ($mysqli->connect_error) {
-    		echo ' [x] Connection failed for login', "\n";
-    		die("Connection failed: " . $mysqli->connect_error);
+        	echo ' [x] Connection failed for login', "\n";
+        	die("Connection failed: " . $mysqli->connect_error);
 	}
-	
+    
 	$query = "SELECT * FROM movies WHERE title = '$title'";
 	$result3 = $mysqli->query($query);
 
     	if ($result3->num_rows > 0) {
     	echo ' [x] Movie Already in Table: ', $title, "\n";
     
-   	 $row = $result3->fetch_assoc();
+    	$row = $result3->fetch_assoc();
 
-  	 $movieResult = array(
-        'name' => $row['name'],
-        'overview' => $row['overview'],
-        'poster_path' => $row['poster_path'],
-        'tagline' => $row['tagline']
+   	$movieResult = array(
+    	'name' => $row['name'],
+    	'overview' => $row['overview'],
+    	'poster_path' => $row['poster_path'],
+    	'tagline' => $row['tagline']
     	);
     	return json_encode($movieResult);
 	} else {
-		$response = "";  // or some default value
-		include 'testRabbitMQClient.php';
-		echo ' [x] Movie Found: ', $title, "\n";
-		echo ' [x] Response: ', $response, "\n";
-		return $response;
+    	$response = "";  // or some default value
+    	include 'testRabbitMQClient2.php';
+    	echo ' [x] Movie Found: ', $title, "\n";
+    	echo ' [x] Response: ', $response, "\n";
+    	return $response;
 	}
 }
 
@@ -256,6 +256,4 @@ echo "testRabbitMQServer BEGIN", "\n";
 $server->process_requests('requestProcessor');
 echo "testRabbitMQServer END";
 ?>
-
-
 
