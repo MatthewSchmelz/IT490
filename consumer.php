@@ -65,8 +65,6 @@ function doValidate($sessionId) {
         die("Connection failed: " . $mysqli->connect_error);
     }
 
-    $username = $_COOKIE['username'];
-
     $query = "SELECT time FROM users WHERE sessionId = '$sessionId'";
     $result = $mysqli->query($query);
 
@@ -76,8 +74,9 @@ function doValidate($sessionId) {
         $currentTime = time();
 
         echo ' [x] Validation TimeStamp: ', $currentTime , "\n";
+        
 
-        if (($currentTime - $dbTime) >= 36000) {
+        if (($currentTime - $dbTime) >= 3600) {
             echo ' [x] Session expired (more than 1 hour since last validation)', "\n";
             return false;
         }
@@ -114,21 +113,144 @@ function requestProcessor($request)
 	    	case "validate":
 			return doValidate($request['sessionId']);
 	    	case "register":
-			return handlereg($request['username'], $request['password'], $request['rating_table'], $request['watchlist_table']);
+			return handlereg($request['username'], $request['password'], $request['rating_table'], $request['watchlist_table'], $request['userEmail']);
 	    	case "search_movie":
 			return handleTitle($request['title']);
 		case "comment":
 		    return handleComment($request['username'], $request['movie_name'], $request['comment']);
 		case "fetch_comments":
 		    return fetchComments($request['movie_name']);
+		case "watchlist":
+		    return handleWatchlist($request['watchlist_table'], $request['movie_name']);
+		case "rating":
+		    return handleRating($request['rating_table'], $request['movie_name'], $request['movie_rating']);
+		case "get_watchlist":
+		    return profileWatchlist($request['watchlist_table']);
+		case "get_ratings":
+		    return profileRatings($request['rating_table']);
+		case "delete_watchlist":
+		    echo ' [x] Delete_Watchlist: ', "\n";
+		    return deleteWatchlist($request['movie_name'],$request['watchlist_table']);
 	}
 	return array("returnCode" => '0', 'message' => "Server received request and processed");
 }
 
+function deleteWatchlist($movie_name, $watchlist_table) {
+    $mysqli = new mysqli("localhost", "IT490", "IT490", "imdb_database");
+
+    if ($mysqli->connect_error) {
+        return ['status' => false, 'message' => 'Database connection failed'];
+    }
+    
+    $query = "DELETE FROM `$watchlist_table` WHERE Movies = '$movie_name'";
+    $result = $mysqli->query($query);
+    echo ' [x] Deleted Movie from Watchlist: ', print_r($movie_name, true), "\n";
+    return true;
+}
+
+function profileRatings($rating_table) {
+    $mysqli = new mysqli("localhost", "IT490", "IT490", "imdb_database");
+
+    if ($mysqli->connect_error) {
+        return ['status' => false, 'message' => 'Database connection failed'];
+    }
+
+    $stmt = $mysqli->prepare("SELECT * FROM `$rating_table`");
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $ratingList = $result->fetch_all(MYSQLI_ASSOC);
+    $data = [];
+    $data = $ratingList;
+
+    $stmt->close();
+    $mysqli->close();
+    echo ' [x] Geting Watchlist: ', print_r($ratingList, true), "\n";
+    //return ['status' => true, 'comments' => $comments];
+    return $data;
+}
+
+function profileWatchlist($watchlist_table) {
+    $mysqli = new mysqli("localhost", "IT490", "IT490", "imdb_database");
+
+    if ($mysqli->connect_error) {
+        return ['status' => false, 'message' => 'Database connection failed'];
+    }
+
+    $stmt = $mysqli->prepare("SELECT * FROM `$watchlist_table`");
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $watchlist = $result->fetch_all(MYSQLI_ASSOC);
+    $data = [];
+    $data = $watchlist;
+
+    $stmt->close();
+    $mysqli->close();
+    echo ' [x] Geting Watchlist: ', print_r($watchlist, true), "\n";
+    //return ['status' => true, 'comments' => $comments];
+    return $data;
+}
+
+function handleWatchlist($watchlist_table,$movie_name) {
+	$mysqli = new mysqli("localhost", "IT490", "IT490", "imdb_database");
+
+	if ($mysqli->connect_error) {
+    		echo ' [x] Connection failed for login', "\n";
+    		die("Connection failed: " . $mysqli->connect_error);
+	}
+    
+	$query = "SELECT * FROM `$watchlist_table` WHERE Movies = '$movie_name'";
+	$result2 = $mysqli->query($query);
+	
+	if ($result2->num_rows > 0) {
+    		echo ' [x] Movie Already in Watchlist: ', $movie_name, "\n";
+    		return false;
+	} else {
+    		$query = "INSERT INTO `$watchlist_table` (Movies) VALUES ('$movie_name')";
+    		$result = $mysqli->query($query);
+    		echo ' [x] Movie added to Watchlist: ', $movie_name, "\n";
+		return true;
+    	}
+}
+
+function handleRating($rating_table, $movie_name, $movie_rating) {
+    $mysqli = new mysqli("localhost", "IT490", "IT490", "imdb_database");
+
+    if ($mysqli->connect_error) {
+        echo ' [x] Connection failed for rating', "\n";
+        die("Connection failed: " . $mysqli->connect_error);
+    }
+    
+    try {
+        // Check if the movie already has a rating
+        $query = "SELECT * FROM `$rating_table` WHERE Movies = '$movie_name'";
+        $result = $mysqli->query($query);
+        
+        if ($result->num_rows > 0) {
+            // Movie exists, so update its rating
+            $updateRating = "UPDATE `$rating_table` SET Rating = '$movie_rating' WHERE Movies = '$movie_name'";
+            $mysqli->query($updateRating);
+            echo ' [x] Movie rating updated: ', $movie_name, ' Rating: ', $movie_rating, "\n";
+        } else {
+            // Movie doesn't exist, so insert a new row
+            $insertRating = "INSERT INTO `$rating_table` (Movies, Rating) VALUES ('$movie_name', '$movie_rating')";
+            $mysqli->query($insertRating);
+            echo ' [x] New movie rating inserted: ', $movie_name, ' Rating: ', $movie_rating, "\n";
+        }
+        return true;
+    } catch (exception $e) {
+        echo 'Message: ' . $e->getMessage();
+        echo ' [x] Rating update/insert failed: ', $movie_name, $movie_rating, "\n";
+        return false;
+    } finally {
+        $mysqli->close();
+    }
+}
+
+
 $sessionId = null;
 echo ' [x] Session ID is set to null: ', $sessionId, "\n";
 
-function handlereg($username, $password, $rating_table, $watchlist_table) {
+function handlereg($username, $password, $rating_table, $watchlist_table, $userEmail) {
 	$mysqli = new mysqli("localhost", "IT490", "IT490", "imdb_database");
 
 	if ($mysqli->connect_error) {
@@ -143,7 +265,7 @@ function handlereg($username, $password, $rating_table, $watchlist_table) {
     		echo ' [x] User Failed, user already in system: ', $username, "\n";
     		return false;
 	} else {
-    		$query = "INSERT INTO users (username, password) VALUES ('$username' , '$password')";
+    		$query = "INSERT INTO users (username, password, userEmail) VALUES ('$username' , '$password', '$userEmail')";
     		$result = $mysqli->query($query);
     		echo ' [x] User created with username: ', $username, "\n";
 
@@ -168,43 +290,49 @@ function handlereg($username, $password, $rating_table, $watchlist_table) {
 }
 
 function handleLogin($username, $password) {
-	$mysqli = new mysqli("localhost", "IT490", "IT490", "imdb_database");
+    $mysqli = new mysqli("localhost", "IT490", "IT490", "imdb_database");
 
-	if ($mysqli->connect_error) {
-    		echo ' [x] Connection failed for login',"\n";
-    		die("Connection failed: " . $mysqli->connect_error);
-	}
+    if ($mysqli->connect_error) {
+        echo ' [x] Connection failed for login',"\n";
+        die("Connection failed: " . $mysqli->connect_error);
+    }
 
-	$query = "SELECT * FROM users WHERE username = '$username' AND password = '$password'";
-	$result = $mysqli->query($query);
-    
-	$updateQuery = "UPDATE users SET time = UNIX_TIMESTAMP() WHERE username = '$username'";
-	echo ' [x] Updating TimeStamp: ', time() , "\n";
-    
-	if ($result->num_rows > 0) {
-	    	echo ' [x] Processing login for ', $username, "\n";
-		$sessionId = bin2hex(random_bytes(16));
-		
-		setcookie("username", $username, time() + 3600, "/");
-		
-	    	$updateQuery = "UPDATE users SET sessionId = '$sessionId' WHERE username = '$username'";
-	    	echo ' [x] Updated session table ', "\n";
-	    	$mysqli->query($updateQuery);
-	   	 
-	    	$request = array();
-	    	$request['status'] = true;
-	    	$request['sessionId'] = $sessionId;
+    // Validate user credentials
+    $query = "SELECT * FROM users WHERE username = '$username' AND password = '$password'";
+    $result = $mysqli->query($query);
 
-	    	echo ' [x] Session created for ', $username, "\n";
-	    	echo ' [x] Session ID is set to ', $sessionId, "\n";
-	    	return $request;
-	} else {
-    		echo ' [x] Login failed for ', $username, "\n";
-    		return false;
-	}
-    
-	$result->free();
-	$mysqli->close();
+    if ($result->num_rows > 0) {
+        echo ' [x] Processing login for ', $username, "\n";
+        
+        // Generate session ID
+        $sessionId = bin2hex(random_bytes(16));
+        
+        // Update session ID
+        $updateSessionQuery = "UPDATE users SET sessionId = '$sessionId' WHERE username = '$username'";
+        $mysqli->query($updateSessionQuery);
+        echo ' [x] Updated session table', "\n";
+
+        // Update the login time (this is the missing part)
+        $updateTimeQuery = "UPDATE users SET time = UNIX_TIMESTAMP() WHERE username = '$username'";
+        $mysqli->query($updateTimeQuery);
+        echo ' [x] Updating TimeStamp: ', time(), "\n";
+        
+        // Return session information
+        $request = array();
+        $request['status'] = true;
+        $request['sessionId'] = $sessionId;
+
+        echo ' [x] Session created for ', $username, "\n";
+        echo ' [x] Session ID is set to ', $sessionId, "\n";
+        
+        return $request;
+    } else {
+        echo ' [x] Login failed for ', $username, "\n";
+        return false;
+    }
+
+    $result->free();
+    $mysqli->close();
 }
 
 function handleTitle($title) {
@@ -285,7 +413,6 @@ function handleComment($username, $movie_name, $comment) {
 
     $stmt = $mysqli->prepare("INSERT INTO comments (movie_name, username, comment) VALUES (?, ?, ?)");
     $stmt->bind_param("sss", $movie_name, $username, $comment);
-    
     if ($stmt->execute()) {
     	echo ' [x] Comment Successfully Created: ', print_r($status, true), "\n";
         $status = true;
@@ -312,14 +439,14 @@ function fetchComments($movie_name) {
     $stmt->execute();
     $result = $stmt->get_result();
     $comments = $result->fetch_all(MYSQLI_ASSOC);
-    //$data = [];
-    //$data = $comments;
+    $data = [];
+    $data = $comments;
 
     $stmt->close();
     $mysqli->close();
     echo ' [x] Fetch: ', print_r($status, true), print_r($comments, true), "\n";
-    return ['status' => true, 'comments' => $comments];
-    //return $data;
+    //return ['status' => true, 'comments' => $comments];
+    return $data;
 }
 
 $server = new rabbitMQServer("testRabbitMQ.ini","testServer");
