@@ -118,7 +118,7 @@ function requestProcessor($request)
 	    	case "search_movie":
 			return handleTitle($request['title']);
 		case "comment":
-		    return handleComment($request['username'], $request['movie_name'], $request['movie_comment']);
+		    return handleComment($request['username'], $request['movie_name'], $request['comment']);
 		case "fetch_comments":
 		    return fetchComments($request['movie_name']);
 	}
@@ -277,7 +277,7 @@ function handleTitle($title) {
 }
 
 //TODO
-function handleComment($username, $movie_name, $movie_comment) {
+function handleComment($username, $movie_name, $comment) {
     $mysqli = new mysqli("localhost", "IT490", "IT490", "imdb_database");
     if ($mysqli->connect_error) {
         return ['status' => false, 'message' => 'Database connection failed'];
@@ -286,7 +286,6 @@ function handleComment($username, $movie_name, $movie_comment) {
     $stmt = $mysqli->prepare("INSERT INTO comments (movie_name, username, comment) VALUES (?, ?, ?)");
     $stmt->bind_param("sss", $movie_name, $username, $comment);
     
-    /*
     if ($stmt->execute()) {
     	echo ' [x] Comment Successfully Created: ', print_r($status, true), "\n";
         $status = true;
@@ -294,10 +293,10 @@ function handleComment($username, $movie_name, $movie_comment) {
     	echo ' [x] Comment Failed to Create: ', "\n";
         $status = false;
     }
-    */
     $stmt->close();
     $mysqli->close();
     return ['status' => $status];
+    //return NULL;
 }
 
 //TODO
@@ -313,13 +312,14 @@ function fetchComments($movie_name) {
     $stmt->execute();
     $result = $stmt->get_result();
     $comments = $result->fetch_all(MYSQLI_ASSOC);
-    $data = [];
-    $data = $comments;
+    //$data = [];
+    //$data = $comments;
 
     $stmt->close();
     $mysqli->close();
     echo ' [x] Fetch: ', print_r($status, true), print_r($comments, true), "\n";
-    return $data;
+    return ['status' => true, 'comments' => $comments];
+    //return $data;
 }
 
 $server = new rabbitMQServer("testRabbitMQ.ini","testServer");
