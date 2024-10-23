@@ -6,9 +6,14 @@ require_once('rabbitMQLib.inc');
 
 try {
     // Create a RabbitMQ client
-    $client = new rabbitMQClient("testRabbitMQ.ini", "testServer");
+    if(!$client){
+    	$client = new rabbitMQClient("testRabbitMQ.ini", "testServer");
     echo "Connected to RabbitMQ successfully!<br>";
-    
+    }
+    else{
+    	echo "already have client instance";
+    	}
+    	
 
 } catch (Exception $e) {
     // Catch and display any connection error
@@ -16,7 +21,7 @@ try {
     header("Location: rabbitmq_error.php");
     exit();  // Stop execution if there's an error
 }
-//$client = new rabbitMQClient("testRabbitMQ.ini","testServer");
+
 if (isset($argv[1]))
 {
   $msg = $argv[1];
@@ -35,8 +40,6 @@ $request['username'] = $username;
 $request['password'] = $password;
 //$request['message'] = $msg;
 $response = $client->send_request($request);
-//$response = $client->publish($request);
-//response = ture it490
 //echo "client received response: ".PHP_EOL;
 //Testing if Response is true or false
 
@@ -44,8 +47,8 @@ if($response['status'] === true){
 	echo "Response was true!".PHP_EOL;
 	print_r($response);
 	$sessionId = $response['sessionId'];
-	setcookie("sessionId", $sessionId, time() + 30 , "/");
-	setcookie("username", $username, time() + 30 , "/");
+	setcookie("sessionId", $sessionId, time() + 3600, "/");
+	setcookie("username", $username, time() + 3600, "/");
 	header("Location: success.php");
         exit();
 } else if ($response === false){

@@ -6,12 +6,18 @@ require_once('rabbitMQLib.inc');
 // Check if the form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST['username'];
+    $email = $_POST['email'];
     $password = $_POST['password'];
 
     try {
-        // Create a RabbitMQ client
-        $client = new rabbitMQClient("testRabbitMQ.ini", "testServer");
-        echo "Connected to RabbitMQ successfully!<br>";
+    // Create a RabbitMQ client
+    if(!$client){
+    	$client = new rabbitMQClient("testRabbitMQ.ini", "testServer");
+    echo "Connected to RabbitMQ successfully!<br>";
+    }
+    else{
+    	echo "already have client instance";
+    	}
     } catch (Exception $e) {
         // Catch and display any connection error
         echo "Error connecting to RabbitMQ: " . $e->getMessage();
@@ -23,6 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $request['type'] = "register";
     $request['username'] = $username;
     $request['password'] = $password;
+    $request['userEmail'] = $email;
     $request['rating_table'] = $username . "_rating";
     $request['watchlist_table'] = $username . "_watchlist";
     
@@ -48,20 +55,47 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
     <style>
+        /* Background styles */
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            background: url('background.jpg') no-repeat center center fixed;
+            background-size: cover;
             text-align: center;
-            margin-top: 100px;
+            margin-top: 0;
+            padding: 0;
+            position: center;
+            height: 100vh;
+            overflow: hidden;
         }
+        
+        /* Black blur overlay */
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4); /* Semi-transparent black */
+            backdrop-filter: blur(2px); /* Blur effect */
+            z-index: 1;
+        }
+        
+        /* Content styling */
+        .content {
+            position: relative;
+            z-index: 2;
+            color: white;
+        }
+
         h1 {
-            color: green;
+            color: white;
         }
         form {
             margin-top: 20px;
         }
-        input[type="text"], input[type="password"] {
-            width: 100%;
+        input[type="text"], input[type="password"], input[type = "email"]{
+            width: 70%;
             padding: 10px;
             margin: 10px 0;
             border: 1px solid #ddd;
@@ -82,15 +116,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
 
-<h1>Register</h1>
-<form method="post" action="">
-    <input type="text" name="username" placeholder="Enter Username" required>
-    <input type="password" name="password" placeholder="Enter Password" required>
-    <button type="submit">Register</button>
-</form>
-
-<!-- Login button -->
-<button class="register-button" onclick="window.location.href='testRabbitMQClient.php';">Login</button>
+<div class="content">
+    <h1>Create a MoviCritics Account</h1>
+    <form method="post" action="register.php">
+        <input type="text" name="username" placeholder="Enter Username" required>
+        <input type="email" name="email" placeholder="Enter Email" required>
+        <input type="password" name="password" placeholder="Enter Password" required>
+        <br>
+        <button type="submit">Register</button>
+    </form>
+    <br>
+    <!-- Login button -->
+    <button class="register-button" onclick="window.location.href='login.html';">Login</button>
+</div>
 
 </body>
 </html>

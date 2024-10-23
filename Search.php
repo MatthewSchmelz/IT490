@@ -5,7 +5,8 @@ require_once('get_host_info.inc');
 require_once('rabbitMQLib.inc');
 
 // Reset the cookie timer to 1 hour (3600 seconds) every time user visits the search page
-setcookie("sessionId", $_COOKIE['sessionId'], time() + 30, "/"); // Fixed timer to 3600 seconds (1 hour)
+setcookie("sessionId", $_COOKIE['sessionId'], time() + 3600, "/"); // Fixed timer to 3600 seconds (1 hour)
+setcookie("username", $_COOKIE['username'], time() + 3600, "/");
 
 // Check if sessionID is set in the cookie
 if (!isset($_COOKIE['sessionId'])) {
@@ -16,7 +17,13 @@ if (!isset($_COOKIE['sessionId'])) {
 
 try {
     // Create a RabbitMQ client
-    $client = new rabbitMQClient("testRabbitMQ.ini", "testServer");
+    if(!$client){
+    	$client = new rabbitMQClient("testRabbitMQ.ini", "testServer");
+    //echo "Connected to RabbitMQ successfully!<br>";
+    }
+    else{
+    	echo "already have client instance";
+    	}
 } catch (Exception $e) {
     echo "Error connecting to RabbitMQ: " . $e->getMessage();
     exit();
@@ -63,11 +70,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search Movies</title>
     <style>
+        /* Background styles */
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            text-align: center;
-            margin-top: 100px;
+            background: url('background.jpg') no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            position: relative;
+        }
+
+        /* Black blur overlay */
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4); /* Semi-transparent black */
+            backdrop-filter: blur(2px); /* Blur effect */
+            z-index: 0;
         }
         .header {
             background-color: #333;
@@ -77,18 +104,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             width: 100%;
             top: 0;
             left: 0;
+            z-index: 2;
         }
         .header a {
             color: white;
             margin: 0 10px;
             text-decoration: none;
             font-weight: bold;
+            z-index: 2;
         }
+        .container {
+	    display: flex;
+	    flex-direction: column;
+	    align-items: center;
+	    z-index: 3;
+	    }
         h1 {
-            color: green;
+            color: white;
+            z-index: 3;
+            margin-bottom: 20px;
+            position: auto;
         }
         form {
-            margin-top: 20px;
+            display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 2;
         }
         input[type="text"] {
             width: 300px;
@@ -96,6 +137,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             margin: 10px 0;
             border: 1px solid #ddd;
             border-radius: 5px;
+            z-index: 2;
         }
         button {
             padding: 10px 20px;
@@ -104,9 +146,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            z-index: 2;
         }
         button:hover {
             background-color: #218838;
+            z-index: 2;
         }
         .back-button {
             margin-top: 20px;
@@ -116,9 +160,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            z-index: 2;
         }
         .back-button:hover {
             background-color: #0056b3;
+            z-index: 2;
         }
     </style>
 </head>
@@ -129,14 +175,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <a href="login.html">Logout</a>
     <a href="profile.php">Profile</a>
 </div>
-
+<div class = "container">
 <h1>Search for a Movie</h1>
-
+<br>
 <!-- Search bar and button -->
 <form method="post" action="Search.php">
     <input type="text" name="movie_name" placeholder="Enter movie name" required>
     <button type="submit">Search</button>
 </form>
+</div>
 
 </body>
 </html>
