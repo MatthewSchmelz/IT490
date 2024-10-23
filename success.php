@@ -34,7 +34,7 @@ try {
     if ($response === true) {
         // Session is valid, continue to the page
         //echo "<h1>Yahooo! You have successfully logged in</h1>";
-        header("Location: search.php");
+        header("Location: Search.php");
     } else {
         // Session is not valid or has expired
         echo "<h1>Your session has expired or is invalid. Please log in again.</h1>";
@@ -85,4 +85,3 @@ try {
 
 </body>
 </html>
-
