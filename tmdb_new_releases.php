@@ -68,7 +68,7 @@ function sendMovieTitlesToRabbitMQ($NewReleaseTitles) {
     $channel->queue_declare($queue, false, true, false, false);
 
     // Convert the movie titles array to JSON
-    $messageBody = json_encode($movieTitles);
+    $messageBody = json_encode($NewReleaseTitles);
 
     // Create a message and publish it to the queue
     $message = new AMQPMessage($messageBody, ['delivery_mode' => 2]);  // Delivery mode 2 makes the message persistent
