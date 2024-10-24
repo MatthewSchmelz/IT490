@@ -36,7 +36,7 @@ try {
 // Request for movie recommendations
 $request = array();
 $request['type'] = "get_recommendations";
-$request['username'] = $username;
+$request['rating_table'] = $username . "_rating";
 $response = $client->send_request($request);
 $data = $response;
 
