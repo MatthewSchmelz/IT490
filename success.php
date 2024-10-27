@@ -12,8 +12,13 @@ if (!isset($_COOKIE['sessionId'])) {
 
 try {
     // Create a RabbitMQ client
-    $client = new rabbitMQClient("testRabbitMQ.ini", "testServer");
-    //echo "Connected to RabbitMQ successfully!<br>";
+    if(!$client){
+    	$client = new rabbitMQClient("testRabbitMQ.ini", "testServer");
+    echo "Connected to RabbitMQ successfully!<br>";
+    }
+    else{
+    	echo "already have client instance";
+    	}
 
 } catch (Exception $e) {
     // Catch and display any connection error

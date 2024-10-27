@@ -454,6 +454,3 @@ echo "testRabbitMQServer BEGIN", "\n";
 $server->process_requests('requestProcessor');
 echo "testRabbitMQServer END";
 ?>
-
-
-
