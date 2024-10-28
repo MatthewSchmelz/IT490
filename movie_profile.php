@@ -255,7 +255,7 @@ if ($comments_data === null) {
 <div class="header">
 	<a href="login.html">Logout</a>
 	<a href="profile.php">Profile</a>
-	<a herf="recommendations.php">Recommendations</a>
+	<a href="recommendations.php">Recommendations</a>
 </div>
 
 <div class="movie-container">
