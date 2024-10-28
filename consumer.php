@@ -6,6 +6,7 @@ require_once 'rabbitMQLib.inc';
 require_once 'testRabbitMQ2.ini';
 require_once 'path.inc';
 require_once 'get_host_info.inc';
+require_once 'EmailTesting.php';
 
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
@@ -117,22 +118,141 @@ function requestProcessor($request)
 	    	case "search_movie":
 			return handleTitle($request['title']);
 		case "comment":
-		    return handleComment($request['username'], $request['movie_name'], $request['comment']);
+		        return handleComment($request['username'], $request['movie_name'], $request['comment']);
 		case "fetch_comments":
-		    return fetchComments($request['movie_name']);
+		        return fetchComments($request['movie_name']);
 		case "watchlist":
-		    return handleWatchlist($request['watchlist_table'], $request['movie_name']);
+		        return handleWatchlist($request['watchlist_table'], $request['movie_name']);
 		case "rating":
-		    return handleRating($request['rating_table'], $request['movie_name'], $request['movie_rating']);
+		        return handleRating($request['rating_table'], $request['movie_name'], $request['movie_rating']);
 		case "get_watchlist":
-		    return profileWatchlist($request['watchlist_table']);
+		        return profileWatchlist($request['watchlist_table']);
 		case "get_ratings":
-		    return profileRatings($request['rating_table']);
+		        return profileRatings($request['rating_table']);
 		case "delete_watchlist":
-		    echo ' [x] Delete_Watchlist: ', "\n";
-		    return deleteWatchlist($request['movie_name'],$request['watchlist_table']);
+		        echo ' [x] Delete_Watchlist: ', "\n";
+		        return deleteWatchlist($request['movie_name'],$request['watchlist_table']);
+		case "NewMovies":
+		        echo ' [x] Movie Released Requested: ', "\n";
+		        return NewMoviesReleased($request['moviesReleased']);
+		case "get_recommendations":
+		        echo ' [x] Movie Recommendations Requested: ', "\n";
+		        return handleRecommendations($request['rating_table']);
 	}
 	return array("returnCode" => '0', 'message' => "Server received request and processed");
+}
+
+function handleRecommendations($rating_table) {
+    $mysqli = new mysqli("localhost", "IT490", "IT490", "imdb_database");
+    echo ' [x] Rating_Table: ', print_r($rating_table, true), "\n";
+    
+    if ($mysqli->connect_error) {
+        echo ' [x] Database connection failed for recommendations', "\n";
+        return ['status' => false, 'message' => 'Database connection failed'];
+    }
+
+    // Fetch liked movies or preferences of the user
+    $query = "SELECT Movies FROM $rating_table ORDER BY Rating LIMIT 5;";
+    $movieQuery = $mysqli->query($query);
+
+    if (!$movieQuery) {
+        echo ' [x] Query failed: ', $mysqli->error, "\n";
+        return null;
+    }
+
+    $Movies = $movieQuery->fetch_all(MYSQLI_ASSOC);
+    $movieArray = [];
+    echo ' [x] Fetched movies for recommendations:', print_r($Movies, true), "\n";
+
+    foreach ($Movies as $movie) {
+        echo 'Inside the Loop', "\n";
+        
+        // Assume testRabbitMQClient3.php returns a $response variable for each movie
+        include 'testRabbitMQClient3.php';
+        
+        // Check if $response is set by the included file
+        if (isset($response)) {
+            print_r($response, true);
+            $movieArray[] = $response;  // Append $response to $movieArray
+            echo ' [x] First Movie: ', print_r($response,true), "\n";
+        } else {
+            echo ' [x] No response found for movie: ', $movie['Movies'], "\n";
+        }
+    }
+
+    $mysqli->close();
+
+    return $movieArray;
+}
+
+
+function handleTitle($title) {
+    $mysqli = new mysqli("localhost", "IT490", "IT490", "imdb_database");
+
+    if ($mysqli->connect_error) {
+    	echo ' [x] Connection failed for login', "\n";
+        die("Connection failed: " . $mysqli->connect_error);
+    }
+    
+    $stmt = $mysqli->prepare("SELECT * FROM movies WHERE title = ?");
+    if (!$stmt) {
+        echo ' [x] Prepare failed: ', $mysqli->error, "\n";
+        return null;
+    }
+
+    $stmt->bind_param("s", $title);
+    $stmt->execute();
+    $result3 = $stmt->get_result();
+
+    if ($result3 && $result3->num_rows > 0) {
+    	echo ' [x] Movie Already in Table: ', $title, "\n";
+        $response = "";
+
+        $row = $result3->fetch_assoc();
+        if ($row) {
+            $movieResult = array(
+                'status' => true,
+                'name' => $row['title'],
+                'overview' => $row['overview'],
+                'poster_path' => $row['poster_path'],
+                'tagline' => $row['tagline'] ?? 'Tagline Not Available'
+            );
+            echo ' [x] Response: ', print_r($movieResult, true), "\n";
+            $response = $movieResult;
+            return $response;
+        } else {
+            echo ' [x] Error fetching movie data: ', $mysqli->error, "\n";
+            return null;
+        }
+    } else {
+        $response = [];
+        include 'testRabbitMQClient2.php';
+
+        if (!empty($response) && isset($response['name'], $response['overview'], $response['poster_path'], $response['tagline'])) {
+            $insertStmt = $mysqli->prepare("INSERT INTO movies (title, overview, poster_path, tagline, name) VALUES (?, ?, ?, ?, ?)");
+            if (!$insertStmt) {
+                echo ' [x] Insert prepare failed: ', $mysqli->error, "\n";
+                return null;
+            }
+
+            $insertStmt->bind_param("sssss", $title, $response['overview'], $response['poster_path'], $response['tagline'], $response['name']);
+    		if ($insertStmt->execute()) {
+     	   echo ' [x] Movie successfully added to the table: ', $response['name'], "\n";
+    	} else {
+        echo ' [x] Insert failed: ', $mysqli->error, "\n";
+    	}
+
+            $insertStmt->close();
+        } else {
+            echo ' [x] No movie data available to add to the table.', "\n";
+        }
+
+        echo ' [x] Movie Not Found: ', $title, "\n";
+        echo ' [x] Response: ', print_r($response, true), "\n";
+        return $response;
+    }
+    $stmt->close();
+    $mysqli->close();
 }
 
 function deleteWatchlist($movie_name, $watchlist_table) {
@@ -246,7 +366,6 @@ function handleRating($rating_table, $movie_name, $movie_rating) {
     }
 }
 
-
 $sessionId = null;
 echo ' [x] Session ID is set to null: ', $sessionId, "\n";
 
@@ -335,76 +454,6 @@ function handleLogin($username, $password) {
     $mysqli->close();
 }
 
-function handleTitle($title) {
-    $mysqli = new mysqli("localhost", "IT490", "IT490", "imdb_database");
-
-    if ($mysqli->connect_error) {
-    	echo ' [x] Connection failed for login', "\n";
-        die("Connection failed: " . $mysqli->connect_error);
-    }
-    
-    $stmt = $mysqli->prepare("SELECT * FROM movies WHERE title = ?");
-    if (!$stmt) {
-        echo ' [x] Prepare failed: ', $mysqli->error, "\n";
-        return null;
-    }
-
-    $stmt->bind_param("s", $title);
-    $stmt->execute();
-    $result3 = $stmt->get_result();
-
-    if ($result3 && $result3->num_rows > 0) {
-    	echo ' [x] Movie Already in Table: ', $title, "\n";
-        $response = "";
-
-        $row = $result3->fetch_assoc();
-        if ($row) {
-            $movieResult = array(
-                'status' => true,
-                'name' => $row['title'],
-                'overview' => $row['overview'],
-                'poster_path' => $row['poster_path'],
-                'tagline' => $row['tagline'] ?? 'Tagline Not Available'
-            );
-            echo ' [x] Response: ', print_r($movieResult, true), "\n";
-            $response = $movieResult;
-            return $response;
-        } else {
-            echo ' [x] Error fetching movie data: ', $mysqli->error, "\n";
-            return null;
-        }
-    } else {
-        $response = [];
-        include 'testRabbitMQClient2.php';
-
-        if (!empty($response) && isset($response['name'], $response['overview'], $response['poster_path'], $response['tagline'])) {
-            $insertStmt = $mysqli->prepare("INSERT INTO movies (title, overview, poster_path, tagline, name) VALUES (?, ?, ?, ?, ?)");
-            if (!$insertStmt) {
-                echo ' [x] Insert prepare failed: ', $mysqli->error, "\n";
-                return null;
-            }
-
-            $insertStmt->bind_param("sssss", $title, $response['overview'], $response['poster_path'], $response['tagline'], $response['name']);
-    		if ($insertStmt->execute()) {
-     	   echo ' [x] Movie successfully added to the table: ', $response['name'], "\n";
-    	} else {
-        echo ' [x] Insert failed: ', $mysqli->error, "\n";
-    	}
-
-            $insertStmt->close();
-        } else {
-            echo ' [x] No movie data available to add to the table.', "\n";
-        }
-
-        echo ' [x] Movie Not Found: ', $title, "\n";
-        echo ' [x] Response: ', print_r($response, true), "\n";
-        return $response;
-    }
-    $stmt->close();
-    $mysqli->close();
-}
-
-//TODO
 function handleComment($username, $movie_name, $comment) {
     $mysqli = new mysqli("localhost", "IT490", "IT490", "imdb_database");
     if ($mysqli->connect_error) {
@@ -426,7 +475,6 @@ function handleComment($username, $movie_name, $comment) {
     //return NULL;
 }
 
-//TODO
 function fetchComments($movie_name) {
     $mysqli = new mysqli("localhost", "IT490", "IT490", "imdb_database");
 
@@ -447,6 +495,58 @@ function fetchComments($movie_name) {
     echo ' [x] Fetch: ', print_r($status, true), print_r($comments, true), "\n";
     //return ['status' => true, 'comments' => $comments];
     return $data;
+}
+
+function NewMoviesReleased($moviesReleased){
+	//Connect to mysql
+	$mysqli = new mysqli("localhost", "IT490", "IT490", "imdb_database");
+	if ($mysqli->connect_error) {
+        	return ['status' => false, 'message' => 'Database connection failed'];
+    	}
+    	echo ' [x] Connected to mySQL: ', "\n";
+    	
+    	//Grab all of our users and their emails from our table
+	$query = "SELECT username, userEmail FROM users";
+    	$userQuery = $mysqli->query($query);
+    	$users = $userQuery->fetch_all();
+    	echo ' [x] Users and Email Grabbed: ', print_r($users, true), print_r($userQuery, true), "\n";
+    	
+	//Go through every user
+	foreach ($users as $user) {
+		//while($users = $userQuery->fetch_array()){
+		//while($users = mysql_fetch_assoc($userQuery)) {
+		//$user = $userQuery->fetch_assoc();
+		$username = $user[0];
+		$userEmail = $user[1];
+		
+		//For every movie, check if the movie is in their watchlist
+		foreach ($moviesReleased as $title) {
+			//Damn you mark and your trillion tables
+			//Get their watchlist table
+			$watchlistTable = $username . "_watchlist";
+			
+			//IS THE MOVIE IN THERE?
+			$watchlistQuery = "SELECT * FROM `$watchlistTable` WHERE Movies = ?";
+			$stmt = $mysqli->prepare($watchlistQuery);
+			$stmt->bind_param("s", $title);
+			$stmt->execute();
+			$result = $stmt->get_result();
+			
+			//If the movie is in there, send the user an email.
+			if ($result->num_rows > 0) {
+			
+				//Heads up for when you're looking at this later
+				//I turned the Email testing file into a file with the 
+				//sendEmail function encompassing everything.
+				//just require_once the file and we're all good to go. 
+				echo ' [x] Email Sent: ', "\n";
+				sendEmail($userEmail, $title);
+			}
+			$stmt->close();
+		}
+	}
+	
+	$mysqli->close();
 }
 
 $server = new rabbitMQServer("testRabbitMQ.ini","testServer");

@@ -49,7 +49,6 @@ $data = $response;
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Movie Recommendations</title>
     <style>
-        /* Background styles */
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
@@ -122,8 +121,7 @@ $data = $response;
 <div class="header">
     <a href="login.html">Logout</a>
     <a href="profile.php">Profile</a>
-    <a href="movie_profile.php">Movie Profile</a>
-    <a href="recommendations.php">Recommendations</a>
+    <a href="Search.php">Back to Search</a>
 </div>
 
 <div class="content-container">
@@ -137,6 +135,7 @@ $data = $response;
                 <div class="movie-card">
                     <div class="movie-details">
                         <div class="movie-title"><?php echo htmlspecialchars($movie['name']); ?></div>
+                        <div class="movie-description"><?php echo htmlspecialchars($movie['description']); ?></div>
                     </div>
                 </div>
             <?php endforeach; ?>
@@ -148,3 +147,4 @@ $data = $response;
 
 </body>
 </html>
+

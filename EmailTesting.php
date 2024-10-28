@@ -5,11 +5,14 @@ require 'vendor/autoload.php'; //Composer
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
+
+
+function sendEmail($userEmail,$title){
 $mail = new PHPMailer(true);  // Create a new PHPMailer instance
 
 //testing variables
-$userEmail = 'mgv26@njit.edu';
-$title = 'Batman';
+//$userEmail = 'mws36@njit.edu';
+//$title = 'Batman';
 
 try {
     //Server settings
@@ -34,6 +37,7 @@ try {
     echo 'Email sent successfully.';
 } catch (Exception $e) {
     echo "Email could not be sent.";
+}
 }
 ?>
 
