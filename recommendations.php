@@ -122,8 +122,7 @@ $data = $response;
 <div class="header">
     <a href="login.html">Logout</a>
     <a href="profile.php">Profile</a>
-    <a href="movie_profile.php">Movie Profile</a>
-    <a href="recommendations.php">Recommendations</a>
+    <a href="Search.php">Back to Search</a>
 </div>
 
 <div class="content-container">

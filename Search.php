@@ -174,6 +174,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <div class="header">
     <a href="login.html">Logout</a>
     <a href="profile.php">Profile</a>
+    <a herf="recommendations.php">Recommendations</a>
 </div>
 <div class = "container">
 <h1>Search for a Movie</h1>

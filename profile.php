@@ -147,6 +147,7 @@ $rating_data = $response2;
 <div class="header">
     <a href="login.html">Logout</a>
     <a href="Search.php">Back to Search</a>
+    <a herf="recommendations.php">Recommendation</a>
 </div>
 
 <div class="content-container">
