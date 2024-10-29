@@ -1,7 +1,12 @@
 <?php
 //Consumer.php Page
+<<<<<<< HEAD
 require_once __DIR__ . '/vendor/autoload.php';
 require_once 'testRabbitMQ.ini';
+=======
+require_once __DIR__ . '/vendor/autoload.php';  // Include RabbitMQ library
+require_once 'testRabbitMQ.ini';  // Include the RabbitMQ host info file
+>>>>>>> 3978329f016465c994b1b4542784efe0d49daaf7
 require_once 'rabbitMQLib.inc';
 require_once 'testRabbitMQ2.ini';
 require_once 'path.inc';
@@ -30,6 +35,10 @@ class testRabbitMQServer {
 	}
 
 	public function process_requests($callback) {
+<<<<<<< HEAD
+=======
+    	// Create connection to RabbitMQ
+>>>>>>> 3978329f016465c994b1b4542784efe0d49daaf7
     	$connection = new AMQPStreamConnection(
         	$this->host,
         	$this->port,
@@ -43,10 +52,23 @@ class testRabbitMQServer {
     	$exchange = 'testExchange';
     	$queue = 'testQueue';
 
+<<<<<<< HEAD
     	$channel->exchange_declare($exchange, 'topic', false, true, false);
     	$channel->queue_declare($queue, false, true, false, false);
     	$channel->queue_bind($queue, $exchange);
 
+=======
+    	// Declare an exchange
+    	$channel->exchange_declare($exchange, 'topic', false, true, false);
+
+    	// Declare a queue
+    	$channel->queue_declare($queue, false, true, false, false);
+
+    	// Bind the queue to the exchange
+    	$channel->queue_bind($queue, $exchange);
+
+    	// Start consuming messages from the queue
+>>>>>>> 3978329f016465c994b1b4542784efe0d49daaf7
     	$channel->basic_consume($queue, '', false, false, false, false, function($msg) use ($callback, $channel) {
         	$response = call_user_func($callback, $msg);
         	$channel->basic_ack($msg->delivery_info['delivery_tag']);	 
@@ -59,6 +81,7 @@ class testRabbitMQServer {
 }
 
 function doValidate($sessionId) {
+<<<<<<< HEAD
     $mysqli = new mysqli("localhost", "IT490", "IT490", "imdb_database");
 
     if ($mysqli->connect_error) {
@@ -84,17 +107,51 @@ function doValidate($sessionId) {
 
         $updateQuery = "UPDATE users SET time = UNIX_TIMESTAMP() WHERE sessionId = '$sessionId'";
         $mysqli->query($updateQuery);
+=======
+	// Create a new MySQL connection
+	$mysqli = new mysqli("localhost", "IT490", "IT490", "imdb_database");
 
-        echo ' [x] Processing Validation', "\n";
-        echo ' [x] Validation Worked: ', $sessionId, "\n";
-        return true;
-    } else {
-        echo ' [x] Validation failed: Invalid sessionId', "\n";
-        return false;
-    }
+	// Check for connection errors
+	if ($mysqli->connect_error) {
+    	echo ' [x] Connection failed for validation',"\n";
+    	die("Connection failed: " . $mysqli->connect_error);
+	}
 
+	// Query to get the time for the given sessionId
+	$query = "SELECT time FROM users WHERE sessionId = '$sessionId'";
+	$result = $mysqli->query($query);
+
+	if ($result->num_rows > 0) {
+    	$row = $result->fetch_assoc();
+    	$dbTime = $row['time'];  // Time stored in the database (Unix timestamp)
+    	$currentTime = time();   // Current Unix timestamp
+
+    	echo ' [x] Validation TimeStamp: ', $currentTime , "\n";
+
+    	if (($currentTime - $dbTime) < 30) {
+        	echo ' [x] Session expired (more than 30 seconds since last validation)', "\n";
+        	return false;
+    	}
+
+    	$updateQuery = "UPDATE users SET time = UNIX_TIMESTAMP() WHERE sessionId = '$sessionId'";
+    	$mysqli->query($updateQuery);
+>>>>>>> 3978329f016465c994b1b4542784efe0d49daaf7
+
+    	echo ' [x] Processing Validation', "\n";
+    	echo ' [x] Validation Worked: ', $sessionId, "\n";
+    	return true;
+	} else {
+    	echo ' [x] Validation failed: Invalid sessionId', "\n";
+    	return false;
+	}
+
+<<<<<<< HEAD
     $result->free();
     $mysqli->close();
+=======
+	$result->free();
+	$mysqli->close();
+>>>>>>> 3978329f016465c994b1b4542784efe0d49daaf7
 }
 
 function requestProcessor($request)
@@ -105,6 +162,7 @@ function requestProcessor($request)
  
 	if(!isset($request['type']))
 	{
+<<<<<<< HEAD
     	   	return "ERROR: unsupported message type";
 	}
 	switch ($request['type'])
@@ -365,23 +423,51 @@ function handleRating($rating_table, $movie_name, $movie_rating) {
     } finally {
         $mysqli->close();
     }
+=======
+    	return "ERROR: unsupported message type";
+	}
+	switch ($request['type'])
+	{
+    	case "login":
+        	return handleLogin($request['username'], $request['password']);
+    	case "validate":
+        	return doValidate($request['sessionId']);
+    	case "register":
+        	return handlereg($request['username'], $request['password'], $request['rating_table'], $request['watchlist_table']);
+    	case "search_movie":
+        	return handleTitle($request['title']);
+	}
+	return array("returnCode" => '0', 'message' => "Server received request and processed");
+>>>>>>> 3978329f016465c994b1b4542784efe0d49daaf7
 }
 
 $sessionId = null;
 echo ' [x] Session ID is set to null: ', $sessionId, "\n";
 
+<<<<<<< HEAD
 function handlereg($username, $password, $rating_table, $watchlist_table, $userEmail) {
 	$mysqli = new mysqli("localhost", "IT490", "IT490", "imdb_database");
 
 	if ($mysqli->connect_error) {
     		echo ' [x] Connection failed for login', "\n";
     		die("Connection failed: " . $mysqli->connect_error);
+=======
+function handlereg($username, $password, $rating_table, $watchlist_table) {
+	// Create a new MySQL connection
+	$mysqli = new mysqli("localhost", "IT490", "IT490", "imdb_database");
+
+	// Check for connection errors
+	if ($mysqli->connect_error) {
+    	echo ' [x] Connection failed for login', "\n";
+    	die("Connection failed: " . $mysqli->connect_error);
+>>>>>>> 3978329f016465c994b1b4542784efe0d49daaf7
 	}
     
 	$query = "SELECT * FROM users WHERE username = '$username' AND password = '$password'";
 	$result2 = $mysqli->query($query);
     
 	if ($result2->num_rows > 0) {
+<<<<<<< HEAD
     		echo ' [x] User Failed, user already in system: ', $username, "\n";
     		return false;
 	} else {
@@ -391,6 +477,17 @@ function handlereg($username, $password, $rating_table, $watchlist_table, $userE
 
     		$query1 = "CREATE TABLE `$rating_table` (Movies VARCHAR(255), Rating VARCHAR(255))";
     		if ($mysqli->query($query1) === TRUE) {
+=======
+    	echo ' [x] User Failed, user already in system: ', $username, "\n";
+    	return false;
+	} else {
+    	$query = "INSERT INTO users (username, password) VALUES ('$username' , '$password')";
+    	$result = $mysqli->query($query);
+    	echo ' [x] User created with username: ', $username, "\n";
+
+    	$query1 = "CREATE TABLE `$rating_table` (Movies VARCHAR(255), Rating VARCHAR(255))";
+    	if ($mysqli->query($query1) === TRUE) {
+>>>>>>> 3978329f016465c994b1b4542784efe0d49daaf7
         	echo " [x] Rating table created successfully: $rating_table\n";
     	} else {
         	echo ' [x] Error creating rating table: ', $mysqli->error, "\n";
@@ -410,6 +507,7 @@ function handlereg($username, $password, $rating_table, $watchlist_table, $userE
 }
 
 function handleLogin($username, $password) {
+<<<<<<< HEAD
     $mysqli = new mysqli("localhost", "IT490", "IT490", "imdb_database");
 
     if ($mysqli->connect_error) {
@@ -453,6 +551,82 @@ function handleLogin($username, $password) {
 
     $result->free();
     $mysqli->close();
+=======
+	// Create a new MySQL connection
+	$mysqli = new mysqli("localhost", "IT490", "IT490", "imdb_database");
+
+	// Check for connection errors
+	if ($mysqli->connect_error) {
+    	echo ' [x] Connection failed for login',"\n";
+    	die("Connection failed: " . $mysqli->connect_error);
+	}
+
+	// Query to check if the user exists
+	$query = "SELECT * FROM users WHERE username = '$username' AND password = '$password'";
+	$result = $mysqli->query($query);
+    
+	$updateQuery = "UPDATE users SET time = UNIX_TIMESTAMP() WHERE username = '$username'";
+	echo ' [x] Updating TimeStamp: ', time() , "\n";
+    
+	if ($result->num_rows > 0) {
+    	echo ' [x] Processing login for ', $username, "\n";
+	$username1 = $username;
+    	//$sessionId = "IT490"; // Generate a secure session ID
+	$sessionId = bin2hex(random_bytes(16));  // Generate a secure session ID
+    	$updateQuery = "UPDATE users SET sessionId = '$sessionId' WHERE username = '$username'";
+    	echo ' [x] Updated session table ', "\n";
+    	$mysqli->query($updateQuery);
+   	 
+    	$request = array();
+    	$request['status'] = true;
+    	$request['sessionId'] = $sessionId;
+
+    	echo ' [x] Session created for ', $username, "\n";
+    	echo ' [x] Session ID is set to ', $sessionId, "\n";
+    	return $request;
+	} else {
+   	 
+    	echo ' [x] Login failed for ', $username, "\n";
+    	return false;
+	}
+    
+	$result->free();
+	$mysqli->close();
+}
+
+// TODO
+function handleTitle($title) {
+	$mysqli = new mysqli("localhost", "IT490", "IT490", "imdb_database");
+
+	// Check for connection errors
+	if ($mysqli->connect_error) {
+        	echo ' [x] Connection failed for login', "\n";
+        	die("Connection failed: " . $mysqli->connect_error);
+	}
+    
+	$query = "SELECT * FROM movies WHERE title = '$title'";
+	$result3 = $mysqli->query($query);
+
+    	if ($result3->num_rows > 0) {
+    	echo ' [x] Movie Already in Table: ', $title, "\n";
+    
+    	$row = $result3->fetch_assoc();
+
+   	$movieResult = array(
+    	'name' => $row['name'],
+    	'overview' => $row['overview'],
+    	'poster_path' => $row['poster_path'],
+    	'tagline' => $row['tagline']
+    	);
+    	return json_encode($movieResult);
+	} else {
+    	$response = "";  // or some default value
+    	include 'testRabbitMQClient2.php';
+    	echo ' [x] Movie Found: ', $title, "\n";
+    	echo ' [x] Response: ', $response, "\n";
+    	return $response;
+	}
+>>>>>>> 3978329f016465c994b1b4542784efe0d49daaf7
 }
 
 function handleComment($username, $movie_name, $comment) {
