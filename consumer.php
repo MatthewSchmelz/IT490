@@ -175,6 +175,7 @@ function handleRecommendations($rating_table) {
             print_r($response, true);
             $movieArray[] = $response;  // Append $response to $movieArray
             echo ' [x] First Movie: ', print_r($response,true), "\n";
+            return $movieArray[];
         } else {
             echo ' [x] No response found for movie: ', $movie['Movies'], "\n";
         }

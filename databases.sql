@@ -352,7 +352,7 @@ UNLOCK TABLES;
 --
 
 /*!40000 ALTER TABLE `innodb_index_stats` DISABLE KEYS */;
-INSERT  IGNORE INTO `innodb_index_stats` VALUES ('imdb_database','IT600_rating','GEN_CLUST_INDEX','2024-10-21 17:21:05','n_diff_pfx01',0,1,'DB_ROW_ID'),('imdb_database','IT600_rating','GEN_CLUST_INDEX','2024-10-21 17:21:05','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('imdb_database','IT600_rating','GEN_CLUST_INDEX','2024-10-21 17:21:05','size',1,NULL,'Number of pages in the index'),('imdb_database','IT600_watchlist','GEN_CLUST_INDEX','2024-10-21 17:21:05','n_diff_pfx01',0,1,'DB_ROW_ID'),('imdb_database','IT600_watchlist','GEN_CLUST_INDEX','2024-10-21 17:21:05','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('imdb_database','IT600_watchlist','GEN_CLUST_INDEX','2024-10-21 17:21:05','size',1,NULL,'Number of pages in the index'),('imdb_database','IT700_rating','GEN_CLUST_INDEX','2024-10-21 17:25:28','n_diff_pfx01',0,1,'DB_ROW_ID'),('imdb_database','IT700_rating','GEN_CLUST_INDEX','2024-10-21 17:25:28','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('imdb_database','IT700_rating','GEN_CLUST_INDEX','2024-10-21 17:25:28','size',1,NULL,'Number of pages in the index'),('imdb_database','IT700_watchlist','GEN_CLUST_INDEX','2024-10-21 17:25:28','n_diff_pfx01',0,1,'DB_ROW_ID'),('imdb_database','IT700_watchlist','GEN_CLUST_INDEX','2024-10-21 17:25:28','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('imdb_database','IT700_watchlist','GEN_CLUST_INDEX','2024-10-21 17:25:28','size',1,NULL,'Number of pages in the index'),('imdb_database','comments','PRIMARY','2024-10-21 18:04:19','n_diff_pfx01',0,1,'id'),('imdb_database','comments','PRIMARY','2024-10-21 18:04:19','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('imdb_database','comments','PRIMARY','2024-10-21 18:04:19','size',1,NULL,'Number of pages in the index'),('imdb_database','movies','GEN_CLUST_INDEX','2024-10-21 22:55:25','n_diff_pfx01',0,1,'DB_ROW_ID'),('imdb_database','movies','GEN_CLUST_INDEX','2024-10-21 22:55:25','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('imdb_database','movies','GEN_CLUST_INDEX','2024-10-21 22:55:25','size',1,NULL,'Number of pages in the index'),('imdb_database','users','username','2024-10-21 17:25:28','n_diff_pfx01',2,1,'username'),('imdb_database','users','username','2024-10-21 17:25:28','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('imdb_database','users','username','2024-10-21 17:25:28','size',1,NULL,'Number of pages in the index'),('mysql','component','PRIMARY','2024-09-18 13:03:13','n_diff_pfx01',0,1,'component_id'),('mysql','component','PRIMARY','2024-09-18 13:03:13','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('mysql','component','PRIMARY','2024-09-18 13:03:13','size',1,NULL,'Number of pages in the index'),('sys','sys_config','PRIMARY','2024-09-18 13:03:13','n_diff_pfx01',6,1,'variable'),('sys','sys_config','PRIMARY','2024-09-18 13:03:13','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('sys','sys_config','PRIMARY','2024-09-18 13:03:13','size',1,NULL,'Number of pages in the index'),('testdb','students','PRIMARY','2024-09-18 13:26:57','n_diff_pfx01',0,1,'id'),('testdb','students','PRIMARY','2024-09-18 13:26:57','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('testdb','students','PRIMARY','2024-09-18 13:26:57','size',1,NULL,'Number of pages in the index');
+INSERT  IGNORE INTO `innodb_index_stats` VALUES ('imdb_database','IT490_rating','GEN_CLUST_INDEX','2024-10-23 20:35:40','n_diff_pfx01',0,1,'DB_ROW_ID'),('imdb_database','IT490_rating','GEN_CLUST_INDEX','2024-10-23 20:35:40','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('imdb_database','IT490_rating','GEN_CLUST_INDEX','2024-10-23 20:35:40','size',1,NULL,'Number of pages in the index'),('imdb_database','IT490_watchlist','GEN_CLUST_INDEX','2024-10-28 15:31:31','n_diff_pfx01',1,1,'DB_ROW_ID'),('imdb_database','IT490_watchlist','GEN_CLUST_INDEX','2024-10-28 15:31:31','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('imdb_database','IT490_watchlist','GEN_CLUST_INDEX','2024-10-28 15:31:31','size',1,NULL,'Number of pages in the index'),('imdb_database','IT700_rating','GEN_CLUST_INDEX','2024-10-27 03:38:16','n_diff_pfx01',0,1,'DB_ROW_ID'),('imdb_database','IT700_rating','GEN_CLUST_INDEX','2024-10-27 03:38:16','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('imdb_database','IT700_rating','GEN_CLUST_INDEX','2024-10-27 03:38:16','size',1,NULL,'Number of pages in the index'),('imdb_database','IT700_watchlist','GEN_CLUST_INDEX','2024-10-27 03:40:38','n_diff_pfx01',2,1,'DB_ROW_ID'),('imdb_database','IT700_watchlist','GEN_CLUST_INDEX','2024-10-27 03:40:38','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('imdb_database','IT700_watchlist','GEN_CLUST_INDEX','2024-10-27 03:40:38','size',1,NULL,'Number of pages in the index'),('imdb_database','Mark_rating','GEN_CLUST_INDEX','2024-10-28 15:45:00','n_diff_pfx01',0,1,'DB_ROW_ID'),('imdb_database','Mark_rating','GEN_CLUST_INDEX','2024-10-28 15:45:00','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('imdb_database','Mark_rating','GEN_CLUST_INDEX','2024-10-28 15:45:00','size',1,NULL,'Number of pages in the index'),('imdb_database','Mark_watchlist','GEN_CLUST_INDEX','2024-10-28 17:47:27','n_diff_pfx01',2,1,'DB_ROW_ID'),('imdb_database','Mark_watchlist','GEN_CLUST_INDEX','2024-10-28 17:47:27','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('imdb_database','Mark_watchlist','GEN_CLUST_INDEX','2024-10-28 17:47:27','size',1,NULL,'Number of pages in the index'),('imdb_database','comments','PRIMARY','2024-10-28 17:41:37','n_diff_pfx01',5,1,'id'),('imdb_database','comments','PRIMARY','2024-10-28 17:41:37','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('imdb_database','comments','PRIMARY','2024-10-28 17:41:37','size',1,NULL,'Number of pages in the index'),('imdb_database','movies','GEN_CLUST_INDEX','2024-10-23 15:35:06','n_diff_pfx01',9,1,'DB_ROW_ID'),('imdb_database','movies','GEN_CLUST_INDEX','2024-10-23 15:35:06','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('imdb_database','movies','GEN_CLUST_INDEX','2024-10-23 15:35:06','size',1,NULL,'Number of pages in the index'),('imdb_database','users','username','2024-10-27 03:38:16','n_diff_pfx01',2,1,'username'),('imdb_database','users','username','2024-10-27 03:38:16','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('imdb_database','users','username','2024-10-27 03:38:16','size',1,NULL,'Number of pages in the index'),('mysql','component','PRIMARY','2024-09-18 13:03:13','n_diff_pfx01',0,1,'component_id'),('mysql','component','PRIMARY','2024-09-18 13:03:13','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('mysql','component','PRIMARY','2024-09-18 13:03:13','size',1,NULL,'Number of pages in the index'),('sys','sys_config','PRIMARY','2024-09-18 13:03:13','n_diff_pfx01',6,1,'variable'),('sys','sys_config','PRIMARY','2024-09-18 13:03:13','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('sys','sys_config','PRIMARY','2024-09-18 13:03:13','size',1,NULL,'Number of pages in the index'),('testdb','students','PRIMARY','2024-09-18 13:26:57','n_diff_pfx01',0,1,'id'),('testdb','students','PRIMARY','2024-09-18 13:26:57','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('testdb','students','PRIMARY','2024-09-18 13:26:57','size',1,NULL,'Number of pages in the index');
 /*!40000 ALTER TABLE `innodb_index_stats` ENABLE KEYS */;
 
 --
@@ -360,7 +360,7 @@ INSERT  IGNORE INTO `innodb_index_stats` VALUES ('imdb_database','IT600_rating',
 --
 
 /*!40000 ALTER TABLE `innodb_table_stats` DISABLE KEYS */;
-INSERT  IGNORE INTO `innodb_table_stats` VALUES ('imdb_database','IT600_rating','2024-10-21 17:21:05',0,1,0),('imdb_database','IT600_watchlist','2024-10-21 17:21:05',0,1,0),('imdb_database','IT700_rating','2024-10-21 17:25:28',0,1,0),('imdb_database','IT700_watchlist','2024-10-21 17:25:28',0,1,0),('imdb_database','comments','2024-10-21 18:04:19',0,1,0),('imdb_database','movies','2024-10-21 22:55:25',0,1,0),('imdb_database','users','2024-10-21 17:25:28',2,1,0),('mysql','component','2024-09-18 13:03:13',0,1,0),('sys','sys_config','2024-09-18 13:03:13',6,1,0),('testdb','students','2024-09-18 13:26:57',0,1,0);
+INSERT  IGNORE INTO `innodb_table_stats` VALUES ('imdb_database','IT490_rating','2024-10-23 20:35:40',0,1,0),('imdb_database','IT490_watchlist','2024-10-28 15:31:31',1,1,0),('imdb_database','IT700_rating','2024-10-27 03:38:16',0,1,0),('imdb_database','IT700_watchlist','2024-10-27 03:40:38',2,1,0),('imdb_database','Mark_rating','2024-10-28 15:45:00',0,1,0),('imdb_database','Mark_watchlist','2024-10-28 17:47:27',2,1,0),('imdb_database','comments','2024-10-28 17:41:37',5,1,0),('imdb_database','movies','2024-10-23 15:35:06',9,1,0),('imdb_database','users','2024-10-27 03:38:16',2,1,0),('mysql','component','2024-09-18 13:03:13',0,1,0),('sys','sys_config','2024-09-18 13:03:13',6,1,0),('testdb','students','2024-09-18 13:26:57',0,1,0);
 /*!40000 ALTER TABLE `innodb_table_stats` ENABLE KEYS */;
 
 --
@@ -1035,46 +1035,48 @@ CREATE DATABASE /*!32312 IF NOT EXISTS*/ `imdb_database` /*!40100 DEFAULT CHARAC
 USE `imdb_database`;
 
 --
--- Table structure for table `IT600_rating`
+-- Table structure for table `IT490_rating`
 --
 
-DROP TABLE IF EXISTS `IT600_rating`;
+DROP TABLE IF EXISTS `IT490_rating`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `IT600_rating` (
+CREATE TABLE `IT490_rating` (
   `Movies` varchar(255) DEFAULT NULL,
   `Rating` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `IT600_rating`
+-- Dumping data for table `IT490_rating`
 --
 
-LOCK TABLES `IT600_rating` WRITE;
-/*!40000 ALTER TABLE `IT600_rating` DISABLE KEYS */;
-/*!40000 ALTER TABLE `IT600_rating` ENABLE KEYS */;
+LOCK TABLES `IT490_rating` WRITE;
+/*!40000 ALTER TABLE `IT490_rating` DISABLE KEYS */;
+INSERT INTO `IT490_rating` VALUES ('Batman','3');
+/*!40000 ALTER TABLE `IT490_rating` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `IT600_watchlist`
+-- Table structure for table `IT490_watchlist`
 --
 
-DROP TABLE IF EXISTS `IT600_watchlist`;
+DROP TABLE IF EXISTS `IT490_watchlist`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `IT600_watchlist` (
+CREATE TABLE `IT490_watchlist` (
   `Movies` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `IT600_watchlist`
+-- Dumping data for table `IT490_watchlist`
 --
 
-LOCK TABLES `IT600_watchlist` WRITE;
-/*!40000 ALTER TABLE `IT600_watchlist` DISABLE KEYS */;
-/*!40000 ALTER TABLE `IT600_watchlist` ENABLE KEYS */;
+LOCK TABLES `IT490_watchlist` WRITE;
+/*!40000 ALTER TABLE `IT490_watchlist` DISABLE KEYS */;
+INSERT INTO `IT490_watchlist` VALUES ('Batman');
+/*!40000 ALTER TABLE `IT490_watchlist` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -1096,6 +1098,7 @@ CREATE TABLE `IT700_rating` (
 
 LOCK TABLES `IT700_rating` WRITE;
 /*!40000 ALTER TABLE `IT700_rating` DISABLE KEYS */;
+INSERT INTO `IT700_rating` VALUES ('Superman','4');
 /*!40000 ALTER TABLE `IT700_rating` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1117,7 +1120,53 @@ CREATE TABLE `IT700_watchlist` (
 
 LOCK TABLES `IT700_watchlist` WRITE;
 /*!40000 ALTER TABLE `IT700_watchlist` DISABLE KEYS */;
+INSERT INTO `IT700_watchlist` VALUES ('Up'),('Superman');
 /*!40000 ALTER TABLE `IT700_watchlist` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `Mark_rating`
+--
+
+DROP TABLE IF EXISTS `Mark_rating`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Mark_rating` (
+  `Movies` varchar(255) DEFAULT NULL,
+  `Rating` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Mark_rating`
+--
+
+LOCK TABLES `Mark_rating` WRITE;
+/*!40000 ALTER TABLE `Mark_rating` DISABLE KEYS */;
+INSERT INTO `Mark_rating` VALUES ('Up','5');
+/*!40000 ALTER TABLE `Mark_rating` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `Mark_watchlist`
+--
+
+DROP TABLE IF EXISTS `Mark_watchlist`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Mark_watchlist` (
+  `Movies` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Mark_watchlist`
+--
+
+LOCK TABLES `Mark_watchlist` WRITE;
+/*!40000 ALTER TABLE `Mark_watchlist` DISABLE KEYS */;
+INSERT INTO `Mark_watchlist` VALUES ('Ten Days'),('Up');
+/*!40000 ALTER TABLE `Mark_watchlist` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -1134,7 +1183,7 @@ CREATE TABLE `comments` (
   `comment` text NOT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=59 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1143,7 +1192,7 @@ CREATE TABLE `comments` (
 
 LOCK TABLES `comments` WRITE;
 /*!40000 ALTER TABLE `comments` DISABLE KEYS */;
-INSERT INTO `comments` VALUES (10,'Up','IT700','Good Movie','2024-10-21 18:27:53');
+INSERT INTO `comments` VALUES (54,'Batman','IT490','hello','2024-10-23 21:50:32'),(55,'Up','IT490','Nice','2024-10-27 02:05:41'),(56,'Up','IT700','Cool!','2024-10-27 03:39:20'),(57,'Up','IT490','Cool again','2024-10-28 15:31:10'),(58,'Up','Mark','Cool','2024-10-28 17:41:37');
 /*!40000 ALTER TABLE `comments` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1155,9 +1204,11 @@ DROP TABLE IF EXISTS `movies`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `movies` (
-  `id` int DEFAULT NULL,
-  `title` varchar(255) DEFAULT NULL,
-  `overview` varchar(255) DEFAULT NULL
+  `name` varchar(255) DEFAULT NULL,
+  `overview` text,
+  `poster_path` varchar(255) DEFAULT NULL,
+  `tagline` varchar(255) DEFAULT NULL,
+  `title` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1167,6 +1218,7 @@ CREATE TABLE `movies` (
 
 LOCK TABLES `movies` WRITE;
 /*!40000 ALTER TABLE `movies` DISABLE KEYS */;
+INSERT INTO `movies` VALUES ('Up','Carl Fredricksen spent his entire life dreaming of exploring the globe and experiencing life to its fullest. But at age 78, life seems to have passed him by, until a twist of fate (and a persistent 8-year old Wilderness Explorer named Russell) gives him a new lease on life.','/mFvoEwSfLqbcWwFsDjQebn9bzFe.jpg','Tagline Not Available','Up'),('Batman','Batman must face his most ruthless nemesis when a deformed madman calling himself \"The Joker\" seizes control of Gotham\'s criminal underworld.','/cij4dd21v2Rk2YtUQbV5kW69WB2.jpg','Tagline Not Available','Batman'),(NULL,'Mild-mannered Clark Kent works as a reporter at the Daily Planet alongside his crush, Lois Lane. Clark must summon his superhero alter-ego when the nefarious Lex Luthor launches a plan to take over the world.','/d7px1FQxW4tngdACVRsCSaZq0Xl.jpg','Tagline Not Available','Superman'),('Do You See What I See','Mawar is lonely a lot of the time, especially after losing both parents. She often vents to Vey, her housemate and closest friend about how she feels. During her birthday, Mawar wishes for a boyfriend to brighten up her days. Her wish is finally granted when she eventually meets Restu. Vey is equally excited whenever Mawar tells stories about him. However, uncanny events have started happening ever since. The whole house experiences a lot of mystical and horrific events until one day Vey finds a clue that these incidents are related to Mawar\'s new boyfriend, who is not a human.','/ctAlfcNNHlHR1Ct70WDrinOCIfG.jpg','Tagline Not Available','I See'),('Do You See What I See','Mawar is lonely a lot of the time, especially after losing both parents. She often vents to Vey, her housemate and closest friend about how she feels. During her birthday, Mawar wishes for a boyfriend to brighten up her days. Her wish is finally granted when she eventually meets Restu. Vey is equally excited whenever Mawar tells stories about him. However, uncanny events have started happening ever since. The whole house experiences a lot of mystical and horrific events until one day Vey finds a clue that these incidents are related to Mawar\'s new boyfriend, who is not a human.','/ctAlfcNNHlHR1Ct70WDrinOCIfG.jpg','Tagline Not Available','Do You See What I See'),('The Lego Ninjago Movie','Six young ninjas are tasked with defending their island home of Ninjago. By night, they’re gifted warriors using their skill and awesome fleet of vehicles to fight villains and monsters. By day, they’re ordinary teens struggling against their greatest enemy....high school.','/vUo0pNXGhp2ffTJxiStWt6fHL7F.jpg','Tagline Not Available','Lego Movie'),('The Lego Movie','An ordinary Lego mini-figure, mistakenly thought to be the extraordinary MasterBuilder, is recruited to join a quest to stop an evil Lego tyrant from conquering the universe.','/lbctonEnewCYZ4FYoTZhs8cidAl.jpg','Tagline Not Available','The Lego Movie'),('Alien: Covenant - Prologue: Meet Walter','Introducing Walter, the latest synthetic by Weyland-Yutani. Created to serve. Intelligence powered by AMD, Ryzen and Radeon.','/mArTrTN1YAFnPwGZFNaoe4Dfdaj.jpg','Tagline Not Available','Alien Covenent'),('Alien: Covenant','The crew of the colony ship Covenant, bound for a remote planet on the far side of the galaxy, discovers what they think is an uncharted paradise but is actually a dark, dangerous world.','/zecMELPbU5YMQpC81Z8ImaaXuf9.jpg','Tagline Not Available','Alien: Covenant'),('Ten Days','As the Russian-Ukrainian war breaks out, Lena\'s family kitchen becomes a battleground. Struggling to prove her pacifist views to the family Lena takes a step she knows won\'t be approved.','/qE7gl2TjTCtB6XQN4XUmPuizXRv.jpg','Tagline Not Available','Ten Days');
 /*!40000 ALTER TABLE `movies` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1182,6 +1234,7 @@ CREATE TABLE `users` (
   `password` varchar(255) NOT NULL,
   `sessionId` varchar(255) DEFAULT NULL,
   `time` varchar(15) DEFAULT NULL,
+  `userEmail` varchar(255) DEFAULT NULL,
   UNIQUE KEY `username` (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -1192,7 +1245,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES ('IT600','IT600','bfec44ea4dd8865806ae2fd58abb702d','1729534493'),('IT700','IT700','6d5e6ff20ade50526fc845305c6d016e','1729555072');
+INSERT INTO `users` VALUES ('IT490','IT490','a2cd060d9d243e6e40d6584ad9f402ac','1730129449','qa9@njit.edu'),('IT700','IT700','110fde75fcfd4823c2bc88ea4708d8c8','1730000305','mgv26@njit.edu'),('Mark','Mark','014e70ea19cb844aa4ffe5d1da0660b8','1730153558','markcg.villanueva@gmail.com');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1239,4 +1292,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-10-21 20:05:37
+-- Dump completed on 2024-10-28 18:57:47
