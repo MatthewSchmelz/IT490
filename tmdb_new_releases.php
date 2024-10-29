@@ -92,7 +92,7 @@ function sendMovieTitlesToRabbitMQ($NewReleaseTitles) {
 
 $apiKey = '8ff7e10f47b5a38149694f4798d9176d';
 $NewReleaseTitles = getMovieTitlesReleasedToday($apiKey);
-//echo '<pre>'; print_r($NewReleaseTitles); echo '<pre>';
+echo '<pre>'; print_r($NewReleaseTitles); echo '<pre>';
 //Sending it to rabbitmq
 $client = new rabbitMQClient("testRabbitMQ.ini","testServer");
 $request = array();
