@@ -61,6 +61,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit();
     }
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -97,27 +98,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             z-index: 0;
         }
         .header {
-            background-color: #333;
-            padding: 10px;
-            text-align: right;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            left: 0;
-            z-index: 2;
-        }
-        .header a {
-            color: white;
-            margin: 0 10px;
-            text-decoration: none;
-            font-weight: bold;
-            z-index: 2;
-        }
+    background-color: #50C878;
+    padding: 10px 20px;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+}
+
+.header img {
+    height: 40px;
+    width: auto;
+    margin-right: 10px;
+}
+
+.header a {
+    color: white;
+    margin: 0 10px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
         .container {
 	    display: flex;
 	    flex-direction: column;
 	    align-items: center;
 	    z-index: 3;
+	    margin-top: 80px; /* Space for the fixed header */
 	    }
         h1 {
             color: white;
@@ -172,6 +182,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <!-- Header with Logout and Profile links -->
 <div class="header">
+    <img src="logo.png" alt="Logo"> <!-- Logo on the left -->
     <a href="login.html">Logout</a>
     <a href="profile.php">Profile</a>
     <a href="recommendations.php">Recommendations</a>

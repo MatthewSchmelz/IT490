@@ -32,13 +32,18 @@ try {
     echo "Error connecting to RabbitMQ: " . $e->getMessage();
     exit();
 }
-
+$data = [];
 // Request for movie recommendations
 $request = array();
 $request['type'] = "get_recommendations";
 $request['rating_table'] = $username . "_rating";
 $response = $client->send_request($request);
 $data = $response;
+
+if ($data === null) {
+	$data = []; // Handle the error gracefully
+	echo "<p>Error fetching recommendation.</p>";
+}
 
 ?>
 
@@ -57,20 +62,30 @@ $data = $response;
             margin-top: 60px;
         }
         .header {
-            background-color: #333;
-            padding: 10px;
-            text-align: right;
-            position: fixed;
-            width: 100%;
-            top:0;
-            left: 0;
-        }
-        .header a {
-            color: white;
-            margin: 0 10px;
-            text-decoration: none;
-            font-weight: bold;
-        }
+    background-color: #50C878;
+    padding: 10px 20px;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+}
+
+.header img {
+    height: 40px;
+    width: auto;
+    margin-right: 10px;
+}
+
+.header a {
+    color: white;
+    margin: 0 10px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
         .content-container {
             margin-top: 100px;
             width: 80%;
@@ -120,6 +135,7 @@ $data = $response;
 
 <!-- Header with Navigation Links -->
 <div class="header">
+	<img src="logo.png" alt="Logo"> <!-- Logo on the left -->
     <a href="login.html">Logout</a>
     <a href="profile.php">Profile</a>
     <a href="Search.php">Back to Search</a>
@@ -135,7 +151,7 @@ $data = $response;
             <?php foreach ($data as $movie): ?>
                 <div class="movie-card">
                     <div class="movie-details">
-                        <div class="movie-title"><?php echo htmlspecialchars($movie['name']); ?></div>
+                        <div class="movie-title"><?php echo htmlspecialchars($movie); ?></div>
                     </div>
                 </div>
             <?php endforeach; ?>

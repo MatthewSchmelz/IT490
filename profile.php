@@ -82,20 +82,29 @@ $rating_data = $response2;
             margin-top: 60px;
         }
         .header {
-            background-color: #333;
-            padding: 10px;
-            text-align: right;
-            position: fixed;
-            width: 100%;
-            top:0;
-            left: 0;
-        }
-        .header a {
-            color: white;
-            margin: 0 10px;
-            text-decoration: none;
-            font-weight: bold;
-        }
+    background-color: #50C878;
+    padding: 10px 20px;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+}
+
+.header img {
+    height: 40px;
+    width: auto;
+    margin-right: 10px;
+}
+
+.header a {
+    color: white;
+    margin: 0 10px;
+    text-decoration: none;
+    font-weight: bold;
+}
         .content-container {
             margin-top: 100px;
             width: 80%;
@@ -133,8 +142,8 @@ $rating_data = $response2;
             background-color: #dc3545;
             color: white;
             border: none;
-            border-radius: 5px;
             cursor: pointer;
+            border-radius: 5px;
         }
         .delete-button:hover {
             background-color: #c82333;
@@ -145,6 +154,7 @@ $rating_data = $response2;
 
 <!-- Header with Logout link -->
 <div class="header">
+	<img src="logo.png" alt="Logo"> <!-- Logo on the left -->
     <a href="login.html">Logout</a>
     <a href="Search.php">Back to Search</a>
     <a href="recommendations.php">Recommendation</a>

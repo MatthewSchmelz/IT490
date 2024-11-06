@@ -130,21 +130,30 @@ if ($comments_data === null) {
         	text-align: center;
         	margin-top: 60px;
     	}
-    	.header {
-        	background-color: #333;
-        	padding: 10px;
-        	text-align: right;
-        	position: fixed;
-        	width: 100%;
-        	top:0;
-        	left: 0;
-    	}
-    	.header a {
-        	color: white;
-        	margin: 0 10px;
-        	text-decoration: none;
-        	font-weight: bold;
-    	}
+    	        .header {
+    background-color: #50C878;
+    padding: 10px 20px;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+}
+
+.header img {
+    height: 40px;
+    width: auto;
+    margin-right: 10px;
+}
+
+.header a {
+    color: white;
+    margin: 0 10px;
+    text-decoration: none;
+    font-weight: bold;
+}
     	.movie-container {
         	display: flex;
         	flex-direction: column;
@@ -253,6 +262,7 @@ if ($comments_data === null) {
 
 <!-- Header with Logout and Profile links -->
 <div class="header">
+	<img src="logo.png" alt="Logo"> <!-- Logo on the left -->
 	<a href="login.html">Logout</a>
 	<a href="profile.php">Profile</a>
 	<a href="recommendations.php">Recommendations</a>
