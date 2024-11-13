@@ -45,32 +45,36 @@
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 300px;
+            width: 100%;
+            max-width: 400px;
             text-align: center;
             position: relative;
             z-index: 2; /* Ensures the container appears above the overlay */
+            display: grid;
+            grid-template-rows: auto;
+            gap: 10px;
         }
 
         h2 {
-            text-align: center;
             color: black;
         }
 
-        input[type="text"], input[type="password"] {
+        input[type="text"], input[type="password"], button, .register-button {
             width: 100%;
             padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ddd;
+            margin: 5px 0;
             border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        input[type="text"], input[type="password"] {
+            border: 1px solid #ddd;
         }
 
         button {
-            width: 100%;
-            padding: 10px;
             background-color: #28a745;
             color: white;
             border: none;
-            border-radius: 5px;
             cursor: pointer;
         }
 
@@ -79,17 +83,37 @@
         }
 
         .register-button {
-            margin-top: 20px;
-            padding: 10px;
             background-color: #007bff;
             color: white;
-            border: none;
-            border-radius: 5px;
             cursor: pointer;
         }
 
         .register-button:hover {
             background-color: #0056b3;
+        }
+
+        /* Responsive styling */
+        @media (max-width: 768px) {
+            .login-container {
+                padding: 15px;
+                width: 90%;
+            }
+            h2 {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 10px;
+                width: 100%;
+            }
+            h2 {
+                font-size: 1.2rem;
+            }
+            input[type="text"], input[type="password"], button, .register-button {
+                font-size: 0.9rem;
+            }
         }
     </style>
 </head>
