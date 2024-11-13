@@ -175,7 +175,6 @@ function handleRecommendations($rating_table) {
             print_r($response, true);
             $movieArray[] = $response;  // Append $response to $movieArray
             echo ' [x] First Movie: ', print_r($response,true), "\n";
-            return $movieArray[];
         } else {
             echo ' [x] No response found for movie: ', $movie['Movies'], "\n";
         }
@@ -374,85 +373,94 @@ function handlereg($username, $password, $rating_table, $watchlist_table, $userE
 	$mysqli = new mysqli("localhost", "IT490", "IT490", "imdb_database");
 
 	if ($mysqli->connect_error) {
-    		echo ' [x] Connection failed for login', "\n";
-    		die("Connection failed: " . $mysqli->connect_error);
+		echo ' [x] Connection failed for login', "\n";
+		die("Connection failed: " . $mysqli->connect_error);
 	}
-    
-	$query = "SELECT * FROM users WHERE username = '$username' AND password = '$password'";
+
+	$hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+	$query = "SELECT * FROM users WHERE username = '$username'";
 	$result2 = $mysqli->query($query);
-    
+
 	if ($result2->num_rows > 0) {
-    		echo ' [x] User Failed, user already in system: ', $username, "\n";
-    		return false;
+		echo ' [x] User Failed, user already in system: ', $username, "\n";
+		return false;
 	} else {
-    		$query = "INSERT INTO users (username, password, userEmail) VALUES ('$username' , '$password', '$userEmail')";
-    		$result = $mysqli->query($query);
-    		echo ' [x] User created with username: ', $username, "\n";
+		$query = "INSERT INTO users (username, password, userEmail) VALUES ('$username' , '$hashedPassword', '$userEmail')";
+		$result = $mysqli->query($query);
+		echo ' [x] User created with username: ', $username, "\n";
 
-    		$query1 = "CREATE TABLE `$rating_table` (Movies VARCHAR(255), Rating VARCHAR(255))";
-    		if ($mysqli->query($query1) === TRUE) {
-        	echo " [x] Rating table created successfully: $rating_table\n";
-    	} else {
-        	echo ' [x] Error creating rating table: ', $mysqli->error, "\n";
-    	}
+		$query1 = "CREATE TABLE `$rating_table` (Movies VARCHAR(255), Rating VARCHAR(255))";
+		if ($mysqli->query($query1) === TRUE) {
+			echo " [x] Rating table created successfully: $rating_table\n";
+		} else {
+			echo ' [x] Error creating rating table: ', $mysqli->error, "\n";
+		}
 
-    	$query2 = "CREATE TABLE `$watchlist_table` (Movies VARCHAR(255))";
-    	if ($mysqli->query($query2) === TRUE) {
-        	echo " [x] Watchlist table created successfully: $watchlist_table\n";
-    	} else {
-        	echo ' [x] Error creating watchlist table: ', $mysqli->error, "\n";
-    	}
-    	return true;
+		$query2 = "CREATE TABLE `$watchlist_table` (Movies VARCHAR(255))";
+		if ($mysqli->query($query2) === TRUE) {
+			echo " [x] Watchlist table created successfully: $watchlist_table\n";
+		} else {
+			echo ' [x] Error creating watchlist table: ', $mysqli->error, "\n";
+		}
+		return true;
 	}
-    
+
 	$result2->free();
 	$mysqli->close();
 }
 
 function handleLogin($username, $password) {
-    $mysqli = new mysqli("localhost", "IT490", "IT490", "imdb_database");
+	$mysqli = new mysqli("localhost", "IT490", "IT490", "imdb_database");
 
-    if ($mysqli->connect_error) {
-        echo ' [x] Connection failed for login',"\n";
-        die("Connection failed: " . $mysqli->connect_error);
-    }
+	if ($mysqli->connect_error) {
+		echo ' [x] Connection failed for login', "\n";
+		die("Connection failed: " . $mysqli->connect_error);
+	}
 
-    // Validate user credentials
-    $query = "SELECT * FROM users WHERE username = '$username' AND password = '$password'";
-    $result = $mysqli->query($query);
+	// Validate user credentials
+	$query = "SELECT * FROM users WHERE username = '$username'";
+	$result = $mysqli->query($query);
 
-    if ($result->num_rows > 0) {
-        echo ' [x] Processing login for ', $username, "\n";
-        
-        // Generate session ID
-        $sessionId = bin2hex(random_bytes(16));
-        
-        // Update session ID
-        $updateSessionQuery = "UPDATE users SET sessionId = '$sessionId' WHERE username = '$username'";
-        $mysqli->query($updateSessionQuery);
-        echo ' [x] Updated session table', "\n";
+	if ($result->num_rows > 0) {
+		$user = $result->fetch_assoc();
+		
+		// Verify the hashed password
+		if (password_verify($password, $user['password'])) {
+			echo ' [x] Processing login for ', $username, "\n";
+			
+			// Generate session ID
+			$sessionId = bin2hex(random_bytes(16));
+			
+			// Update session ID
+			$updateSessionQuery = "UPDATE users SET sessionId = '$sessionId' WHERE username = '$username'";
+			$mysqli->query($updateSessionQuery);
+			echo ' [x] Updated session table', "\n";
 
-        // Update the login time (this is the missing part)
-        $updateTimeQuery = "UPDATE users SET time = UNIX_TIMESTAMP() WHERE username = '$username'";
-        $mysqli->query($updateTimeQuery);
-        echo ' [x] Updating TimeStamp: ', time(), "\n";
-        
-        // Return session information
-        $request = array();
-        $request['status'] = true;
-        $request['sessionId'] = $sessionId;
+			// Update the login time
+			$updateTimeQuery = "UPDATE users SET time = UNIX_TIMESTAMP() WHERE username = '$username'";
+			$mysqli->query($updateTimeQuery);
+			echo ' [x] Updating TimeStamp: ', time(), "\n";
+			
+			// Return session information
+			$request = array();
+			$request['status'] = true;
+			$request['sessionId'] = $sessionId;
 
-        echo ' [x] Session created for ', $username, "\n";
-        echo ' [x] Session ID is set to ', $sessionId, "\n";
-        
-        return $request;
-    } else {
-        echo ' [x] Login failed for ', $username, "\n";
-        return false;
-    }
+			echo ' [x] Session created for ', $username, "\n";
+			echo ' [x] Session ID is set to ', $sessionId, "\n";
+			
+			return $request;
+		} else {
+			echo ' [x] Login failed for ', $username, ": Invalid password\n";
+			return false;
+		}
+	} else {
+		echo ' [x] Login failed for ', $username, ": User not found\n";
+		return false;
+	}
 
-    $result->free();
-    $mysqli->close();
+	$result->free();
+	$mysqli->close();
 }
 
 function handleComment($username, $movie_name, $comment) {
