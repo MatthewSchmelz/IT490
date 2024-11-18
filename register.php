@@ -10,6 +10,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = $_POST['password'];
     $phone = $_POST['phone']; // Capture the phone number input
 
+    if (strlen($phone) != 11) {
+        echo "<h1>Error: Phone number must be exactly 11 digits.</h1>";
+        exit();
+    }
+
     try {
         // Create a RabbitMQ client
         if(!$client){
@@ -163,6 +168,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         }
     </style>
+    <script>
+        function validatePhone(input) {
+            if (input.value.length > 11) {
+                input.value = input.value.slice(0, 11); // Restrict to 11 digits
+            }
+        }
+    </script>
 </head>
 <body>
 
@@ -172,7 +184,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <input type="text" name="username" placeholder="Enter Username" required>
         <input type="email" name="email" placeholder="Enter Email" required>
         <input type="password" name="password" placeholder="Enter Password" required>
-        <input type="number" name="phone" placeholder="Enter Phone Number" max= 11 required> <!-- New number input box -->
+        <input type="number" name="phone" placeholder="Enter 11-Digit Phone Number" required 
+               oninput="validatePhone(this)" min="10000000000" max="99999999999">
         
         <button type="submit">Register</button>
     </form>
