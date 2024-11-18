@@ -8,6 +8,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST['username'];
     $email = $_POST['email'];
     $password = $_POST['password'];
+    $phone = $_POST['phone']; // Capture the phone number input
 
     try {
         // Create a RabbitMQ client
@@ -25,6 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $request['username'] = $username;
     $request['password'] = $password;
     $request['userEmail'] = $email;
+    $request['number'] = $phone; // Include the phone number in the request
     $request['rating_table'] = $username . "_rating";
     $request['watchlist_table'] = $username . "_watchlist";
 
@@ -106,7 +108,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             gap: 10px;
         }
 
-        input[type="text"], input[type="password"], input[type="email"] {
+        input[type="text"], input[type="password"], input[type="email"], input[type="number"] {
             width: 100%;
             padding: 12px;
             margin-top: 10px;
@@ -135,7 +137,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 font-size: 1.5rem;
             }
 
-            input[type="text"], input[type="password"], input[type="email"] {
+            input[type="text"], input[type="password"], input[type="email"], input[type="number"] {
                 font-size: 0.9rem;
             }
 
@@ -150,7 +152,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 font-size: 1.2rem;
             }
 
-            input[type="text"], input[type="password"], input[type="email"] {
+            input[type="text"], input[type="password"], input[type="email"], input[type="number"] {
                 font-size: 0.8rem;
                 padding: 10px;
             }
@@ -170,6 +172,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <input type="text" name="username" placeholder="Enter Username" required>
         <input type="email" name="email" placeholder="Enter Email" required>
         <input type="password" name="password" placeholder="Enter Password" required>
+        <input type="number" name="phone" placeholder="Enter Phone Number" max= 11 required> <!-- New number input box -->
+        
         <button type="submit">Register</button>
     </form>
     <br>
