@@ -3,6 +3,7 @@
 require_once('path.inc');
 require_once('get_host_info.inc');
 require_once('rabbitMQLib.inc');
+require_once('tmdb_new_releases.php');
 
 $server = new rabbitMQServer("testRabbitMQ2.ini","testServer2");
 

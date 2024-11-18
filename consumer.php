@@ -114,7 +114,8 @@ function requestProcessor($request)
 	    	case "validate":
 			return doValidate($request['sessionId']);
 	    	case "register":
-			return handlereg($request['username'], $request['password'], $request['rating_table'], $request['watchlist_table'], $request['userEmail']);
+			return handlereg($request['username'], $request['password'], $request['rating_table'], $request['watchlist_table'], $request['userEmail'], 		 	
+			       $request['number']);
 	    	case "search_movie":
 			return handleTitle($request['title']);
 		case "comment":
@@ -369,7 +370,7 @@ function handleRating($rating_table, $movie_name, $movie_rating) {
 $sessionId = null;
 echo ' [x] Session ID is set to null: ', $sessionId, "\n";
 
-function handlereg($username, $password, $rating_table, $watchlist_table, $userEmail) {
+function handlereg($username, $password, $rating_table, $watchlist_table, $userEmail, $number) {
 	$mysqli = new mysqli("localhost", "IT490", "IT490", "imdb_database");
 
 	if ($mysqli->connect_error) {
@@ -385,7 +386,7 @@ function handlereg($username, $password, $rating_table, $watchlist_table, $userE
 		echo ' [x] User Failed, user already in system: ', $username, "\n";
 		return false;
 	} else {
-		$query = "INSERT INTO users (username, password, userEmail) VALUES ('$username' , '$hashedPassword', '$userEmail')";
+		$query = "INSERT INTO users (username, password, userEmail, number) VALUES ('$username' , '$hashedPassword', '$userEmail', '$number')";
 		$result = $mysqli->query($query);
 		echo ' [x] User created with username: ', $username, "\n";
 
@@ -515,7 +516,7 @@ function NewMoviesReleased($moviesReleased){
     	echo ' [x] Connected to mySQL: ', "\n";
     	
     	//Grab all of our users and their emails from our table
-	$query = "SELECT username, userEmail FROM users";
+	$query = "SELECT username, userEmail, number FROM users";
     	$userQuery = $mysqli->query($query);
     	$users = $userQuery->fetch_all();
     	echo ' [x] Users and Email Grabbed: ', print_r($users, true), print_r($userQuery, true), "\n";
@@ -527,6 +528,8 @@ function NewMoviesReleased($moviesReleased){
 		//$user = $userQuery->fetch_assoc();
 		$username = $user[0];
 		$userEmail = $user[1];
+		$number = $user[2];
+		echo "Number: " , $number, "\n";
 		
 		//For every movie, check if the movie is in their watchlist
 		foreach ($moviesReleased as $title) {
@@ -541,6 +544,7 @@ function NewMoviesReleased($moviesReleased){
 			$stmt->execute();
 			$result = $stmt->get_result();
 			
+			
 			//If the movie is in there, send the user an email.
 			if ($result->num_rows > 0) {
 			
@@ -549,7 +553,7 @@ function NewMoviesReleased($moviesReleased){
 				//sendEmail function encompassing everything.
 				//just require_once the file and we're all good to go. 
 				echo ' [x] Email Sent: ', "\n";
-				sendEmail($userEmail, $title);
+				sendEmail($userEmail, $title, $number);
 			}
 			$stmt->close();
 		}

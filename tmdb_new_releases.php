@@ -47,10 +47,8 @@ function getMovieTitlesReleasedToday($apiKey) {
         foreach ($data['results'] as $movie) {
             // Append the movie title to the array
             $movieTitles[] = $movie['title'];
-            echo ' [x] Appending movie title: ', "\n";
+            echo ' [x] Appending movie title: ', $movie['title'], "\n";
         }
-
-	echo ' [x] Movie Returned: ', "\n";
         return $movieTitles;  // Return the array of movie titles
         
     }
@@ -62,7 +60,7 @@ function getMovieTitlesReleasedToday($apiKey) {
 //For the love of god stop making your own rabbit Connections
 function sendMovieTitlesToRabbitMQ($NewReleaseTitles) {
     // Define RabbitMQ connection settings
-    $host = '172.24.71.42';
+    $host = '172.24.138.28';
     $port = 5672;
     $username = 'test';
     $password = 'test';
@@ -98,7 +96,7 @@ $client = new rabbitMQClient("testRabbitMQ.ini","testServer");
 $request = array();
 $request['type'] = 'NewMovies';
 $request['moviesReleased'] = $NewReleaseTitles;
-echo '<pre>'; print_r($array); echo '<pre>';
+//echo '<pre>'; print_r($array); echo '<pre>';
 //could just publish this but eh
 $client->send_request($request);
 ?>

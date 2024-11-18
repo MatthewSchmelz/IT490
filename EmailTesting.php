@@ -5,11 +5,9 @@ require 'vendor/autoload.php'; //Composer
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-
-
-function sendEmail($userEmail,$title){
+function sendEmail($userEmail,$title, $number){
 $mail = new PHPMailer(true);  // Create a new PHPMailer instance
-
+echo "SendEmail Message: ", $number, "\n";
 //testing variables
 //$userEmail = 'mws36@njit.edu';
 //$title = 'Batman';
@@ -38,6 +36,22 @@ try {
 } catch (Exception $e) {
     echo "Email could not be sent.";
 }
-}
-?>
 
+//$number = "7322211865"
+$ch = curl_init('https://textbelt.com/text');
+$data = array(
+  'phone' => $number,
+  'message' => 'Hello world',
+  'key' => 'textbelt'.'_test',
+);
+
+curl_setopt($ch, CURLOPT_POST, 1);
+curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+$response = curl_exec($ch);
+echo " [x] Message sent: ", $response, "\n";
+curl_close($ch);
+
+}
+?> 
