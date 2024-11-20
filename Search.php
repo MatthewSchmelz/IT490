@@ -1,5 +1,6 @@
 <?php
 //Search.php Page
+
 require_once('path.inc');
 require_once('get_host_info.inc');
 require_once('rabbitMQLib.inc');
@@ -18,12 +19,8 @@ if (!isset($_COOKIE['sessionId'])) {
 try {
     // Create a RabbitMQ client
     if(!$client){
-    	$client = new rabbitMQClient("testRabbitMQ.ini", "testServer");
-    //echo "Connected to RabbitMQ successfully!<br>";
+        $client = new rabbitMQClient("testRabbitMQ.ini", "testServer");
     }
-    else{
-    	echo "already have client instance";
-    	}
 } catch (Exception $e) {
     echo "Error connecting to RabbitMQ: " . $e->getMessage();
     exit();
@@ -70,13 +67,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search Movies</title>
     <style>
+        /* Reset default margin and padding */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         /* Background styles */
         body {
             font-family: Arial, sans-serif;
             background: url('background.jpg') no-repeat center center fixed;
             background-size: cover;
-            margin: 0;
-            padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -92,79 +94,113 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.4); /* Semi-transparent black */
-            backdrop-filter: blur(2px); /* Blur effect */
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(2px);
             z-index: 0;
         }
+
+        /* Header styling */
         .header {
-            background-color: #333;
-            padding: 10px;
-            text-align: right;
+            background-color: #50C878;
+            padding: 10px 20px;
             position: fixed;
             width: 100%;
             top: 0;
-            left: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             z-index: 2;
         }
+
+        .header img {
+            height: 40px;
+            margin-right: 10px;
+        }
+
         .header a {
             color: white;
             margin: 0 10px;
             text-decoration: none;
             font-weight: bold;
-            z-index: 2;
         }
+
+        /* Container styling */
         .container {
-	    display: flex;
-	    flex-direction: column;
-	    align-items: center;
-	    z-index: 3;
-	    }
-        h1 {
-            color: white;
+            display: grid;
+            place-items: center;
             z-index: 3;
+            width: 90%;
+            max-width: 400px;
+            margin-top: 80px;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+            font-size: 1.8rem;
             margin-bottom: 20px;
-            position: auto;
         }
+
         form {
-            display: flex;
-    flex-direction: column;
-    align-items: center;
-    z-index: 2;
+            display: grid;
+            gap: 15px;
+            width: 100%;
         }
+
         input[type="text"] {
-            width: 300px;
+            width: 100%;
             padding: 10px;
-            margin: 10px 0;
             border: 1px solid #ddd;
             border-radius: 5px;
-            z-index: 2;
         }
-        button {
+
+        button, .back-button {
             padding: 10px 20px;
-            background-color: #28a745;
-            color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            z-index: 2;
+            font-size: 1rem;
+            color: white;
         }
+
+        button {
+            background-color: #28a745;
+        }
+
         button:hover {
             background-color: #218838;
-            z-index: 2;
         }
+
         .back-button {
-            margin-top: 20px;
-            padding: 10px 20px;
             background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            z-index: 2;
         }
+
         .back-button:hover {
             background-color: #0056b3;
-            z-index: 2;
+        }
+
+        /* Responsive styling */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.5rem;
+            }
+            .container {
+                width: 90%;
+                margin-top: 100px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.2rem;
+            }
+            button, .back-button, input[type="text"] {
+                font-size: 0.9rem;
+                padding: 8px 15px;
+            }
         }
     </style>
 </head>
@@ -172,19 +208,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <!-- Header with Logout and Profile links -->
 <div class="header">
-    <a href="login.html">Logout</a>
-    <a href="profile.php">Profile</a>
-    <a href="recommendations.php">Recommendations</a>
+    <img src="logo.png" alt="Logo"> <!-- Logo on the left -->
+    <div>
+        <a href="login.html">Logout</a>
+        <a href="profile.php">Profile</a>
+        <a href="recommendations.php">Recommendations</a>
+    </div>
 </div>
-<div class = "container">
-<h1>Search for a Movie</h1>
-<br>
-<!-- Search bar and button -->
-<form method="post" action="Search.php">
-    <input type="text" name="movie_name" placeholder="Enter movie name" required>
-    <button type="submit">Search</button>
-</form>
+
+<div class="container">
+    <h1>Search for a Movie</h1>
+    <!-- Search bar and button -->
+    <form method="post" action="Search.php">
+        <input type="text" name="movie_name" placeholder="Enter movie name" required>
+        <button type="submit">Search</button>
+    </form>
 </div>
 
 </body>
 </html>
+

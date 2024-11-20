@@ -33,7 +33,7 @@
 <h1>Movie Is Already In The WatchList</h1>
 
 <!-- Back to Login Button -->
-<button class="back-button" onclick="window.location.href='movie_profile.php';">Back to Movie Details</button>
+<button class="back-button" onclick="window.location.href='Search.php';">Back to Search Page</button>
 
 </body>
 </html>

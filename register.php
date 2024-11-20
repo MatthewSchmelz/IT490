@@ -10,7 +10,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = $_POST['password'];
     $phone = $_POST['phone']; // Capture the phone number input
 
-    if (strlen($phone) != 10) {
+    if (strlen($phone) != 11) {
         echo "<h1>Error: Phone number must be exactly 11 digits.</h1>";
         exit();
     }
@@ -170,8 +170,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </style>
     <script>
         function validatePhone(input) {
-            if (input.value.length > 10) {
-                input.value = input.value.slice(0, 10); // Restrict to 10 digits
+            if (input.value.length > 11) {
+                input.value = input.value.slice(0, 11); // Restrict to 11 digits
             }
         }
     </script>
@@ -184,8 +184,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <input type="text" name="username" placeholder="Enter Username" required>
         <input type="email" name="email" placeholder="Enter Email" required>
         <input type="password" name="password" placeholder="Enter Password" required>
-        <input type="number" name="phone" placeholder="Enter 10-Digit Phone Number" required 
-               oninput="validatePhone(this)" min="1000000000" max="9999999999">
+        <input type="number" name="phone" placeholder="Enter 11-Digit Phone Number" required 
+               oninput="validatePhone(this)" min="10000000000" max="99999999999">
         
         <button type="submit">Register</button>
     </form>
@@ -196,3 +196,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 </body>
 </html>
+

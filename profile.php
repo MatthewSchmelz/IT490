@@ -1,5 +1,6 @@
 <?php
 // Profile.php Page
+
 require_once('path.inc');
 require_once('get_host_info.inc');
 require_once('rabbitMQLib.inc');
@@ -13,19 +14,13 @@ if (!isset($_COOKIE['sessionId'])) {
     exit();
 }
 
-// Get the username from the cookie
 $username = $_COOKIE['username'];
 
 // Create a RabbitMQ client
 try {
-    // Create a RabbitMQ client
     if(!$client){
-    	$client = new rabbitMQClient("testRabbitMQ.ini", "testServer");
-    echo "Connected to RabbitMQ successfully!<br>";
+        $client = new rabbitMQClient("testRabbitMQ.ini", "testServer");
     }
-    else{
-    	echo "already have client instance";
-    	}
 } catch (Exception $e) {
     echo "Error connecting to RabbitMQ: " . $e->getMessage();
     exit();
@@ -35,18 +30,12 @@ try {
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['delete_movie'])) {
     $movie_to_delete = $_POST['delete_movie'];
     
-    // Prepare the request to delete the movie from the watchlist
     $request = array();
     $request['type'] = "delete_watchlist";
     $request['watchlist_table'] = $username . "_watchlist";
     $request['movie_name'] = $movie_to_delete;
     
-    // Send the delete request to RabbitMQ
     $response = $client->send_request($request);
-    
-    // Redirect back to profile.php
-    //header("Location: profile.php");
-    //exit();
 }
 
 // Request for the watchlist table
@@ -55,16 +44,12 @@ $request['type'] = "get_watchlist";
 $request['watchlist_table'] = $username . "_watchlist";
 $response1 = $client->send_request($request);
 $watchlist_data = $response1;
-//echo $response1;
 
-// Request for the rating table
 $request = array();
 $request['type'] = "get_ratings";
 $request['rating_table'] = $username . "_rating";
 $response2 = $client->send_request($request);
 $rating_data = $response2;
-//echo $response2;
-
 ?>
 
 <!DOCTYPE html>
@@ -74,80 +59,160 @@ $rating_data = $response2;
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo htmlspecialchars($username); ?>'s Profile</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         /* Background styles */
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
-            text-align: center;
-            margin-top: 60px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 60px;
+            margin: 0;
         }
+
+        /* Header styling */
         .header {
-            background-color: #333;
-            padding: 10px;
-            text-align: right;
+            background-color: #50C878;
+            padding: 10px 20px;
             position: fixed;
             width: 100%;
-            top:0;
-            left: 0;
+            top: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 2;
         }
+
+        .header img {
+            height: 40px;
+        }
+
         .header a {
             color: white;
             margin: 0 10px;
             text-decoration: none;
             font-weight: bold;
         }
+
+        /* Content container */
         .content-container {
-            margin-top: 100px;
-            width: 80%;
+            width: 90%;
             max-width: 1000px;
-            margin-left: auto;
-            margin-right: auto;
+            margin-top: 80px;
+            display: grid;
+            gap: 20px;
+            text-align: center;
         }
+
+        h1 {
+            color: #333;
+            font-size: 1.8rem;
+        }
+
+        /* Table section styling */
         .table-section {
             background-color: #fff;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            margin-top: 20px;
             text-align: left;
         }
+
         .table-section h3 {
             text-align: center;
             color: #333;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
         }
+
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 10px;
         }
+
         th, td {
             padding: 12px;
             border-bottom: 1px solid #ddd;
             text-align: left;
         }
+
         th {
             background-color: #f4f4f4;
         }
+
+        /* Button styling */
         .delete-button {
             padding: 5px 10px;
             background-color: #dc3545;
             color: white;
             border: none;
-            border-radius: 5px;
             cursor: pointer;
+            border-radius: 5px;
         }
+
         .delete-button:hover {
             background-color: #c82333;
+        }
+
+        /* Responsive styling */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                padding: 15px;
+                text-align: center;
+            }
+
+            .content-container {
+                width: 95%;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            th, td {
+                padding: 10px;
+                font-size: 0.9rem;
+            }
+
+            .delete-button {
+                padding: 5px 8px;
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.2rem;
+            }
+
+            th, td {
+                padding: 8px;
+                font-size: 0.8rem;
+            }
+
+            .delete-button {
+                padding: 5px 6px;
+                font-size: 0.8rem;
+            }
         }
     </style>
 </head>
 <body>
 
-<!-- Header with Logout link -->
 <div class="header">
-    <a href="login.html">Logout</a>
-    <a href="Search.php">Back to Search</a>
-    <a href="recommendations.php">Recommendation</a>
+    <img src="logo.png" alt="Logo">
+    <div>
+        <a href="login.html">Logout</a>
+        <a href="Search.php">Back to Search</a>
+        <a href="recommendations.php">Recommendation</a>
+    </div>
 </div>
 
 <div class="content-container">
@@ -211,3 +276,4 @@ $rating_data = $response2;
 
 </body>
 </html>
+
