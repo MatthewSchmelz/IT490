@@ -6,7 +6,7 @@ require_once('rabbitMQLib.inc');
 try {
     // Create a RabbitMQ client
     if (!$client) {
-        $client = new rabbitMQClient("testRabbitMQ2.ini", "testServer");
+        $client = new rabbitMQClient("testRabbitMQ3.ini", "testServer");
         echo "Connected to RabbitMQ successfully!<br> \n";
     } else {
         echo "Already have client instance.<br>";
@@ -17,7 +17,14 @@ try {
     header("Location: rabbitmq_error.php");
     exit(); // Stop execution if there's an error
 }
-
+/*
+$remoteUser = "qadeer"; //sending it to qadeer database
+$remoteHost = "172.24.1.2";
+$remotePath = "/home/qadeer/Downloads";
+$localDirectory = "/home/qadeer/git/IT490-Project";
+$password = "Pakistan1200"; // Predefined password
+$counterFile = "/tmp/rsync_counter.txt";
+*/
 // Configuration
 $remoteUser = "markcgv";
 $remoteHost = "172.24.0.1";
