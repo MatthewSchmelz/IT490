@@ -529,7 +529,6 @@ function NewMoviesReleased($moviesReleased){
 		$username = $user[0];
 		$userEmail = $user[1];
 		$number = $user[2];
-		echo "Number: " , $number, "\n";
 		
 		//For every movie, check if the movie is in their watchlist
 		foreach ($moviesReleased as $title) {
@@ -553,6 +552,7 @@ function NewMoviesReleased($moviesReleased){
 				//sendEmail function encompassing everything.
 				//just require_once the file and we're all good to go. 
 				echo ' [x] Email Sent: ', "\n";
+				echo "Number:", $number;
 				sendEmail($userEmail, $title, $number);
 			}
 			$stmt->close();
