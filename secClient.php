@@ -29,7 +29,7 @@ $counterFile = "/tmp/rsync_counter.txt";
 // Configuration
 $remoteUser = "markcgv";
 $remoteHost = "172.24.0.1";
-$remotePath = "/home/markcgv/Downloads";
+$remotePath = "/home/markcgv/git/Builds";
 $localDirectory = "/home/qadeer/git/IT490-Project";
 $password = "Qwe321qaZ~"; // Predefined password
 $counterFile = "/tmp/rsync_counter.txt";
