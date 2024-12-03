@@ -31,7 +31,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $request['username'] = $username;
     $request['password'] = $password;
     $request['userEmail'] = $email;
-    $request['number'] = $phone; // Include the phone number in the request
+    $request['number'] = "+1" . $phone; // Include the phone number in the request
     $request['rating_table'] = $username . "_rating";
     $request['watchlist_table'] = $username . "_watchlist";
 

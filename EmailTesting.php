@@ -6,8 +6,9 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
 function sendEmail($userEmail,$title, $number){
+//echo $number, "\n";
 $mail = new PHPMailer(true);  // Create a new PHPMailer instance
-echo "SendEmail Message: ", $number, "\n";
+//echo "SendEmail Message: ", $number, "\n";
 //testing variables
 //$userEmail = 'mws36@njit.edu';
 //$title = 'Batman';
@@ -33,17 +34,13 @@ try {
     $mail->send();
     
     echo 'Email sent successfully.';
-} catch (Exception $e) {
-    echo "Email could not be sent.";
-}
-
-//$number = "7322211865"
-$ch = curl_init('https://textbelt.com/text');
+    
+    $ch = curl_init('https://textbelt.com/text');
 $data = array(
   'phone' => $number,
-  'message' => 'Hello world',
-  'key' => 'textbelt'.'_test',
-);
+  'message' => "Hello! A movie on your MovieCritics watchlist has been released: $title!",
+  'key' => '803957008c3f15b40489ea9fecd9453bc602cd9eyxyXSF4T14JXVCCekQDUAwCwB',
+  );
 
 curl_setopt($ch, CURLOPT_POST, 1);
 curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
@@ -52,6 +49,13 @@ curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 $response = curl_exec($ch);
 echo " [x] Message sent: ", $response, "\n";
 curl_close($ch);
+
+} catch (Exception $e) {
+    echo "Email could not be sent.";
+}
+
+//$number = "+19733934674";
+
 
 }
 ?> 
