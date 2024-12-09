@@ -29,8 +29,8 @@ $counterFile = "/tmp/rsync_counter.txt";
 // Configuration
 $remoteUser = "markcgv";
 $remoteHost = "172.24.0.1";
-$remotePath = "/home/markcgv/git/Builds";
-$localDirectory = "/home/qadeer/git/IT490-Project";
+$remotePath = "/home/markcgv/git/Builds/";
+$localDirectory = "/home/qadeer/git/Project";
 $password = "Qwe321qaZ~"; // Predefined password
 $counterFile = "/tmp/rsync_counter.txt";
 
@@ -60,7 +60,7 @@ if (rename($localDirectory, $tempDirectoryName)) {
 	echo "Renamed directory to $tempDirectoryName<br>";
 
 	// Prepare the rsync command
-	$rsyncCommand = "rsync -avz --exclude='.git/' --exclude='*.ini' $tempDirectoryName $remoteUser@$remoteHost:$remotePath";
+	$rsyncCommand = "rsync -az --exclude='.git/' --exclude='*.ini' $tempDirectoryName $remoteUser@$remoteHost:$remotePath";
 
 	// Execute the rsync command using expect
 	$expectScriptPath = "/tmp/rsync_with_password.exp";
