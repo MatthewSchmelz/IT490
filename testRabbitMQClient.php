@@ -49,7 +49,7 @@ if($response['status'] === true){
 	$sessionId = $response['sessionId'];
 	setcookie("sessionId", $sessionId, time() + 3600, "/");
 	setcookie("username", $username, time() + 3600, "/");
-	header("Location: success.php");
+	header("Location: 2FA.php");
         exit();
 } else if ($response === false){
 	echo "Response was false!".PHP_EOL;
