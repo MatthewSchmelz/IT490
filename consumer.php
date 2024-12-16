@@ -56,6 +56,7 @@ class testRabbitMQServer {
     	$channel->close();
     	$connection->close();
 	}
+
 }
 
 function doValidate($sessionId) {
@@ -110,7 +111,13 @@ function requestProcessor($request)
 	switch ($request['type'])
 	{
 	    	case "login":
-			return handleLogin($request['username'], $request['password']);
+			// Handle the login request
+            $response = handleLogin($request['username'], $request['password']);
+            if ($response && $response['status'] === true) {
+                // Call TwoFA_Sending if login is successful
+                TwoFA_Sending($request['username']);
+            }
+            return $response;
 	    	case "validate":
 			return doValidate($request['sessionId']);
 	    	case "register":
@@ -139,9 +146,110 @@ function requestProcessor($request)
 		case "get_recommendations":
 		        echo ' [x] Movie Recommendations Requested: ', "\n";
 		        return handleRecommendations($request['rating_table']);
+		case "verify":
+			return verify_twofa($request['username'], $request['code']);
 	}
 	return array("returnCode" => '0', 'message' => "Server received request and processed");
 }
+
+function TwoFA_Sending($username) {
+    $mysqli = new mysqli("localhost", "IT490", "IT490", "imdb_database");
+
+    if ($mysqli->connect_error) {
+        echo ' [x] Connection failed for 2FA', "\n";
+        die("Connection failed: " . $mysqli->connect_error);
+    }
+
+    // Generate a 6-digit random code
+    $code = rand(100000, 999999);
+    echo ' [x] Generated 2FA Code: ', $code, "\n";
+
+    // Update the 2FA code in the database
+    $updateCodeQuery = "UPDATE users SET `2FA` = '$code' WHERE username = '$username'";
+    if ($mysqli->query($updateCodeQuery)) {
+        echo ' [x] 2FA code updated in database for user: ', $username, "\n";
+    } else {
+        echo ' [x] Failed to update 2FA code: ', $mysqli->error, "\n";
+        return false;
+    }
+
+    // Fetch the user's phone number from the database
+    $query = "SELECT number FROM users WHERE username = '$username'";
+    $result = $mysqli->query($query);
+
+    if ($result->num_rows > 0) {
+        $user = $result->fetch_assoc();
+        $number = $user['number'];
+
+        // Send the 2FA code via SMS
+        $ch = curl_init('https://textbelt.com/text');
+        $data = array(
+            'phone' => $number,
+            'message' => "Your 2FA code is: $code",
+            'key' => '803957008c3f15b40489ea9fecd9453bc602cd9eyxyXSF4T14JXVCCekQDUAwCwB',
+        );
+
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        $response = curl_exec($ch);
+        echo " [x] 2FA message sent: ", $response, "\n";
+        curl_close($ch);
+    } else {
+        echo ' [x] Failed to fetch user phone number for 2FA.', "\n";
+    }
+
+    $mysqli->close();
+}
+function verify_twofa($username, $code) {
+    $mysqli = new mysqli("localhost", "IT490", "IT490", "imdb_database");
+
+    if ($mysqli->connect_error) {
+        echo ' [x] Connection failed for 2FA verification', "\n";
+        die("Connection failed: " . $mysqli->connect_error);
+    }
+
+    // Query to retrieve the stored 2FA code for the username
+    $query = "SELECT `2FA` FROM users WHERE username = ?";
+    $stmt = $mysqli->prepare($query);
+
+    if (!$stmt) {
+        echo ' [x] Prepare failed: ', $mysqli->error, "\n";
+        return false;
+    }
+
+    $stmt->bind_param("s", $username);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        
+        $stored_code = $row['2FA'];
+        echo "[x] stored code:" , $stored_code, "\n";
+
+        // Compare the provided code with the stored code
+        if ($stored_code === (int)$code) {
+            echo ' [x] 2FA verified successfully for user: ', $username, "\n";
+            $stmt->close();
+            $mysqli->close();
+            return true; // Code matches
+        } else {
+            echo ' [x] 2FA verification failed: Incorrect code for user: ', $username, "\n";
+            $stmt->close();
+            $mysqli->close();
+            return false; // Code does not match
+        }
+    } else {
+        echo ' [x] 2FA verification failed: User not found or no 2FA code for user: ', $username, "\n";
+        $stmt->close();
+        $mysqli->close();
+        return false; // User not found
+    }
+}
+
+
 
 function handleRecommendations($rating_table) {
     $mysqli = new mysqli("localhost", "IT490", "IT490", "imdb_database");
